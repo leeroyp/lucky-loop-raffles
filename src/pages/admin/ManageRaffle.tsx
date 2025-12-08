@@ -264,8 +264,8 @@ export default function ManageRaffle() {
                     className="w-16 h-16 rounded-xl object-cover"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-xl bg-gradient-gold flex items-center justify-center">
-                    <Ticket className="w-8 h-8 text-background" />
+                  <div className="w-16 h-16 rounded-xl bg-primary flex items-center justify-center">
+                    <Ticket className="w-8 h-8 text-primary-foreground" />
                   </div>
                 )}
                 <div>
@@ -358,15 +358,15 @@ export default function ManageRaffle() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-6 rounded-2xl bg-gradient-card border border-gold/30 shadow-gold mb-8"
+                className="p-6 rounded-2xl bg-success/5 border border-success/20 mb-8"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-gold flex items-center justify-center">
-                    <Trophy className="w-7 h-7 text-background" />
+                  <div className="w-14 h-14 rounded-xl bg-success flex items-center justify-center">
+                    <Trophy className="w-7 h-7 text-success-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm text-gold font-medium">Winner</p>
-                    <p className="text-xl font-bold">
+                    <p className="text-sm text-success font-medium">Winner</p>
+                    <p className="text-xl font-bold text-foreground">
                       {winner.full_name || winner.email}
                     </p>
                     <p className="text-sm text-muted-foreground">{winner.email}</p>
@@ -425,7 +425,7 @@ export default function ManageRaffle() {
                       key={entry.id}
                       className={`flex items-center justify-between p-4 ${
                         index !== entries.length - 1 ? "border-b border-border/50" : ""
-                      } ${entry.user_id === raffle.winner_id ? "bg-gold/10" : ""}`}
+                      } ${entry.user_id === raffle.winner_id ? "bg-success/10" : ""}`}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
@@ -449,7 +449,7 @@ export default function ManageRaffle() {
                           {entry.source}
                         </span>
                         {entry.user_id === raffle.winner_id && (
-                          <Trophy className="w-4 h-4 text-gold" />
+                          <Trophy className="w-4 h-4 text-success" />
                         )}
                       </div>
                     </div>
