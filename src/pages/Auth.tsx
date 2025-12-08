@@ -132,11 +132,11 @@ export default function Auth() {
           </Link>
 
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center shadow-gold">
-              <Ticket className="w-6 h-6 text-background" />
+            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg">
+              <Ticket className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-2xl font-bold text-foreground">
                 {mode === "login" ? "Welcome back" : "Create account"}
               </h1>
               <p className="text-muted-foreground">
@@ -237,10 +237,10 @@ export default function Auth() {
       </div>
 
       {/* Right Panel - Visual */}
-      <div className="hidden lg:flex flex-1 items-center justify-center bg-gradient-hero relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-primary/30 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-accent/20 rounded-full blur-[80px]" />
+      <div className="hidden lg:flex flex-1 items-center justify-center bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[length:24px_24px]" />
+        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-accent/10 rounded-full blur-[80px]" />
         
         <div className="relative z-10 text-center p-12">
           <motion.div
@@ -248,11 +248,11 @@ export default function Auth() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="w-32 h-32 mx-auto mb-8 rounded-3xl bg-gradient-gold flex items-center justify-center shadow-gold animate-float">
-              <Ticket className="w-16 h-16 text-background" />
+            <div className="w-32 h-32 mx-auto mb-8 rounded-3xl bg-primary flex items-center justify-center shadow-xl animate-float">
+              <Ticket className="w-16 h-16 text-primary-foreground" />
             </div>
-            <h2 className="text-3xl font-bold mb-4">
-              Your luck starts <span className="text-gradient-gold">here</span>
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Your luck starts <span className="text-primary">here</span>
             </h2>
             <p className="text-muted-foreground max-w-sm">
               Join thousands of winners and experience the most transparent 

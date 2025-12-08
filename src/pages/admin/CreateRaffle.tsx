@@ -144,11 +144,11 @@ export default function CreateRaffle() {
             </button>
 
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center shadow-gold">
-                <Ticket className="w-6 h-6 text-background" />
+              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg">
+                <Ticket className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Create New Raffle</h1>
+                <h1 className="text-2xl font-bold text-foreground">Create New Raffle</h1>
                 <p className="text-muted-foreground">
                   Set up a new raffle with provably fair draw
                 </p>
