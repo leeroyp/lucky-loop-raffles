@@ -80,7 +80,7 @@ export default function Raffles() {
 
   return (
     <Layout>
-      <div className="min-h-screen py-24">
+      <div className="min-h-screen py-24 bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container px-4">
           {/* Header */}
           <motion.div
@@ -88,12 +88,12 @@ export default function Raffles() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
               <Sparkles className="w-4 h-4" />
               <span className="text-sm font-medium">Active Raffles</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black mb-6">
-              Browse <span className="text-gradient-gold">Raffles</span>
+              Browse <span className="text-gradient">Raffles</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Enter for a chance to win amazing prizes. All draws are provably fair.
@@ -108,7 +108,7 @@ export default function Raffles() {
             className="flex flex-wrap items-center justify-center gap-2 mb-12"
           >
             <Button
-              variant={filter === "all" ? "gold" : "outline"}
+              variant={filter === "all" ? "default" : "outline"}
               onClick={() => setFilter("all")}
               className="gap-2"
             >
@@ -116,7 +116,7 @@ export default function Raffles() {
               All ({raffles.length})
             </Button>
             <Button
-              variant={filter === "LIVE" ? "gold" : "outline"}
+              variant={filter === "LIVE" ? "default" : "outline"}
               onClick={() => setFilter("LIVE")}
               className="gap-2"
             >
@@ -124,7 +124,7 @@ export default function Raffles() {
               Live ({liveCount})
             </Button>
             <Button
-              variant={filter === "CLOSED" ? "gold" : "outline"}
+              variant={filter === "CLOSED" ? "default" : "outline"}
               onClick={() => setFilter("CLOSED")}
               className="gap-2"
             >
@@ -162,7 +162,7 @@ export default function Raffles() {
                   transition={{ delay: index * 0.05 }}
                 >
                   <Link to={`/raffles/${raffle.id}`}>
-                    <div className="group rounded-2xl bg-gradient-card border border-border/50 hover:border-primary/30 overflow-hidden transition-all duration-300 card-hover">
+                    <div className="group rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-lg overflow-hidden transition-all duration-300">
                       {/* Image */}
                       <div className="relative aspect-video bg-muted overflow-hidden">
                         {raffle.image_url ? (
@@ -172,15 +172,15 @@ export default function Raffles() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
-                            <Ticket className="w-12 h-12 text-primary/50" />
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                            <Ticket className="w-12 h-12 text-primary/30" />
                           </div>
                         )}
                         
                         {/* Status Badge */}
                         <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${
                           raffle.status === "LIVE"
-                            ? "bg-success text-success-foreground"
+                            ? "bg-green-500 text-white"
                             : "bg-muted text-muted-foreground"
                         }`}>
                           {raffle.status === "LIVE" ? "LIVE" : "CLOSED"}
@@ -225,8 +225,8 @@ export default function Raffles() {
                         </div>
 
                         {raffle.status === "CLOSED" && raffle.winner_id && (
-                          <div className="mt-4 pt-4 border-t border-border/50">
-                            <div className="flex items-center gap-2 text-gold">
+                          <div className="mt-4 pt-4 border-t border-border">
+                            <div className="flex items-center gap-2 text-yellow-600">
                               <Trophy className="w-4 h-4" />
                               <span className="text-sm font-medium">Winner Selected</span>
                             </div>

@@ -31,19 +31,19 @@ export function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50"
+      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border"
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-gold flex items-center justify-center shadow-gold group-hover:shadow-[0_0_30px_hsl(43_96%_56%_/_0.5)] transition-all duration-300">
-                <Ticket className="w-5 h-5 text-background" />
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-300">
+                <Ticket className="w-5 h-5 text-primary-foreground" />
               </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-success rounded-full animate-pulse" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
             </div>
-            <span className="text-xl font-bold text-gradient-gold">LuckyLoop</span>
+            <span className="text-xl font-bold text-foreground">LuckyLoop</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -107,7 +107,7 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link to="/auth?mode=signup">
-                  <Button variant="gold" size="sm">
+                  <Button size="sm">
                     Get Started
                   </Button>
                 </Link>
@@ -134,7 +134,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden py-4 border-t border-border/50"
+            className="md:hidden py-4 border-t border-border"
           >
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -162,7 +162,7 @@ export function Navbar() {
                   Admin Dashboard
                 </Link>
               )}
-              <div className="border-t border-border/50 pt-4 mt-2">
+              <div className="border-t border-border pt-4 mt-2">
                 {user ? (
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 px-4 py-2">
@@ -194,7 +194,7 @@ export function Navbar() {
                       to="/auth?mode=signup"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      <Button variant="gold" className="w-full">
+                      <Button className="w-full">
                         Get Started
                       </Button>
                     </Link>
