@@ -18,8 +18,8 @@ const tiers = [
     name: "Bronze",
     price: 5,
     entries: 3,
-    color: "bronze",
-    gradient: "bg-gradient-bronze",
+    colorClass: "text-amber-700",
+    gradientClass: "bg-gradient-to-r from-amber-700 to-orange-600",
     icon: Ticket,
     features: [
       "3 raffle entries per month",
@@ -32,8 +32,8 @@ const tiers = [
     name: "Silver",
     price: 10,
     entries: 5,
-    color: "silver",
-    gradient: "bg-gradient-silver",
+    colorClass: "text-slate-500",
+    gradientClass: "bg-gradient-to-r from-slate-400 to-gray-500",
     icon: Shield,
     features: [
       "5 raffle entries per month",
@@ -47,8 +47,8 @@ const tiers = [
     name: "Gold",
     price: 20,
     entries: 10,
-    color: "gold",
-    gradient: "bg-gradient-gold-tier",
+    colorClass: "text-yellow-600",
+    gradientClass: "bg-gradient-to-r from-yellow-500 to-amber-400",
     icon: Crown,
     featured: true,
     features: [
@@ -68,7 +68,7 @@ export default function Pricing() {
 
   return (
     <Layout>
-      <div className="min-h-screen py-24">
+      <div className="min-h-screen py-24 bg-gradient-to-b from-background via-muted/20 to-background">
         {/* Header */}
         <div className="container px-4">
           <motion.div
@@ -76,12 +76,12 @@ export default function Pricing() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
               <Sparkles className="w-4 h-4" />
               <span className="text-sm font-medium">Simple Pricing</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black mb-6">
-              Choose Your <span className="text-gradient-gold">Lucky Plan</span>
+              Choose Your <span className="text-gradient">Lucky Plan</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Subscribe once, get entries every month. No hidden fees, cancel anytime.
@@ -98,29 +98,24 @@ export default function Pricing() {
                 transition={{ delay: index * 0.1 }}
                 className={`relative rounded-2xl border p-8 transition-all duration-300 ${
                   tier.featured
-                    ? "bg-gradient-card border-primary/50 shadow-gold scale-105 z-10"
-                    : "bg-card border-border/50 hover:border-primary/30"
+                    ? "bg-card border-primary shadow-lg scale-105 z-10"
+                    : "bg-card border-border hover:border-primary/30 hover:shadow-md"
                 }`}
               >
                 {tier.featured && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-gold text-background text-sm font-bold flex items-center gap-2">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center gap-2">
                     <Star className="w-4 h-4" />
                     Most Popular
                   </div>
                 )}
 
                 {/* Tier Icon */}
-                <div className={`w-16 h-16 rounded-2xl ${tier.gradient} flex items-center justify-center mb-6 ${
-                  tier.featured ? "shadow-gold" : ""
-                }`}>
-                  <tier.icon className="w-8 h-8 text-background" />
+                <div className={`w-16 h-16 rounded-2xl ${tier.gradientClass} flex items-center justify-center mb-6 shadow-md`}>
+                  <tier.icon className="w-8 h-8 text-white" />
                 </div>
 
                 {/* Tier Name */}
-                <h3 className={`text-2xl font-bold mb-2 ${
-                  tier.color === "gold" ? "text-gold" : 
-                  tier.color === "silver" ? "text-silver" : "text-bronze"
-                }`}>
+                <h3 className={`text-2xl font-bold mb-2 ${tier.colorClass}`}>
                   {tier.name}
                 </h3>
 
@@ -131,7 +126,7 @@ export default function Pricing() {
                 </div>
 
                 {/* Entries */}
-                <div className="flex items-center gap-2 text-muted-foreground mb-6 pb-6 border-b border-border/50">
+                <div className="flex items-center gap-2 text-muted-foreground mb-6 pb-6 border-b border-border">
                   <Ticket className="w-5 h-5 text-primary" />
                   <span className="font-medium">{tier.entries} entries per month</span>
                 </div>
@@ -140,7 +135,7 @@ export default function Pricing() {
                 <ul className="space-y-3 mb-8">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-success shrink-0 mt-0.5" />
+                      <Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
                       <span className="text-sm text-muted-foreground">{feature}</span>
                     </li>
                   ))}
@@ -149,7 +144,7 @@ export default function Pricing() {
                 {/* CTA Button */}
                 <Link to={user ? "/account" : "/auth?mode=signup"}>
                   <Button 
-                    variant={tier.featured ? "gold" : "outline"} 
+                    variant={tier.featured ? "default" : "outline"} 
                     className="w-full gap-2"
                     size="lg"
                   >
@@ -192,7 +187,7 @@ export default function Pricing() {
               ].map((item) => (
                 <div
                   key={item.q}
-                  className="p-6 rounded-xl bg-card border border-border/50"
+                  className="p-6 rounded-xl bg-card border border-border hover:shadow-sm transition-shadow"
                 >
                   <h3 className="font-semibold mb-2">{item.q}</h3>
                   <p className="text-muted-foreground text-sm">{item.a}</p>

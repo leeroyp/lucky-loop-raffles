@@ -13,17 +13,18 @@ import {
   LogOut,
   Shield
 } from "lucide-react";
+import { format } from "date-fns";
 
 const tierColors = {
-  BRONZE: "text-bronze",
-  SILVER: "text-silver",
-  GOLD: "text-gold",
+  BRONZE: "text-amber-700",
+  SILVER: "text-slate-500",
+  GOLD: "text-yellow-600",
 };
 
 const tierGradients = {
-  BRONZE: "bg-gradient-bronze",
-  SILVER: "bg-gradient-silver",
-  GOLD: "bg-gradient-gold-tier",
+  BRONZE: "bg-gradient-to-r from-amber-700 to-orange-600",
+  SILVER: "bg-gradient-to-r from-slate-400 to-gray-500",
+  GOLD: "bg-gradient-to-r from-yellow-500 to-amber-400",
 };
 
 export default function Account() {
@@ -56,8 +57,8 @@ export default function Account() {
           >
             {/* Header */}
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-gold flex items-center justify-center shadow-gold">
-                <User className="w-8 h-8 text-background" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-primary to-violet-500 flex items-center justify-center shadow-lg">
+                <User className="w-8 h-8 text-white" />
               </div>
               <div>
                 <h1 className="text-3xl font-bold">
@@ -152,7 +153,7 @@ export default function Account() {
                   <span className="text-muted-foreground">Member Since</span>
                   <span className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    {new Date(profile.created_at).toLocaleDateString()}
+                    {profile.created_at ? format(new Date(profile.created_at), 'MMMM yyyy') : 'Recently joined'}
                   </span>
                 </div>
               </div>

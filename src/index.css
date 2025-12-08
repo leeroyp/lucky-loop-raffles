@@ -2,78 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    /* LuckyLoop Dark Theme - Golden Lucky Aesthetic */
-    --background: 225 25% 6%;
-    --foreground: 45 20% 95%;
+    /* Clean Light Theme - Fresh & Inviting */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 15%;
 
-    --card: 225 20% 9%;
-    --card-foreground: 45 20% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 15%;
 
-    --popover: 225 22% 8%;
-    --popover-foreground: 45 20% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 15%;
 
-    /* Lucky Gold Primary */
-    --primary: 43 96% 56%;
-    --primary-foreground: 225 25% 6%;
+    /* Vibrant Primary - Friendly Blue */
+    --primary: 230 85% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Deep Purple Secondary */
-    --secondary: 270 30% 20%;
-    --secondary-foreground: 45 20% 95%;
+    /* Soft Secondary */
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 220 20% 25%;
 
-    --muted: 225 15% 15%;
-    --muted-foreground: 225 10% 55%;
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 45%;
 
-    /* Accent - Warm Amber */
-    --accent: 35 100% 50%;
-    --accent-foreground: 225 25% 6%;
+    /* Accent - Warm Coral */
+    --accent: 15 90% 60%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 45 20% 95%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Success - Emerald */
+    /* Success - Fresh Green */
     --success: 152 69% 41%;
-    --success-foreground: 45 20% 95%;
+    --success-foreground: 0 0% 100%;
 
-    --border: 225 15% 18%;
-    --input: 225 15% 15%;
-    --ring: 43 96% 56%;
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 230 85% 60%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Custom LuckyLoop Colors */
-    --gold: 43 96% 56%;
-    --gold-light: 45 100% 70%;
-    --gold-dark: 40 90% 40%;
-    --bronze: 30 60% 45%;
-    --silver: 210 10% 65%;
-    --platinum: 210 15% 80%;
+    /* Tier Colors */
+    --bronze: 25 60% 50%;
+    --silver: 210 10% 55%;
+    --gold: 40 90% 50%;
     
     /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%) 0%, hsl(35 100% 50%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(225 25% 6%) 0%, hsl(270 30% 12%) 50%, hsl(225 25% 6%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(225 20% 11%) 0%, hsl(225 20% 7%) 100%);
-    --gradient-bronze: linear-gradient(135deg, hsl(30 70% 35%) 0%, hsl(25 60% 50%) 100%);
-    --gradient-silver: linear-gradient(135deg, hsl(210 15% 50%) 0%, hsl(210 10% 70%) 100%);
-    --gradient-gold-tier: linear-gradient(135deg, hsl(43 96% 50%) 0%, hsl(35 100% 60%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(230 85% 60%) 0%, hsl(260 80% 65%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220 25% 98%) 0%, hsl(230 40% 96%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 20% 98%) 100%);
+    --gradient-bronze: linear-gradient(135deg, hsl(25 70% 45%) 0%, hsl(30 65% 55%) 100%);
+    --gradient-silver: linear-gradient(135deg, hsl(210 15% 50%) 0%, hsl(210 10% 65%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(40 95% 50%) 0%, hsl(45 100% 55%) 100%);
 
     /* Shadows */
-    --shadow-gold: 0 0 40px hsl(43 96% 56% / 0.3);
-    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.4);
-    --shadow-glow: 0 0 60px hsl(43 96% 56% / 0.15);
+    --shadow-sm: 0 1px 2px hsl(220 20% 15% / 0.04);
+    --shadow-md: 0 4px 12px hsl(220 20% 15% / 0.08);
+    --shadow-lg: 0 8px 24px hsl(220 20% 15% / 0.12);
+    --shadow-primary: 0 4px 20px hsl(230 85% 60% / 0.25);
 
     /* Sidebar */
-    --sidebar-background: 225 25% 8%;
-    --sidebar-foreground: 45 20% 95%;
-    --sidebar-primary: 43 96% 56%;
-    --sidebar-primary-foreground: 225 25% 6%;
-    --sidebar-accent: 225 15% 15%;
-    --sidebar-accent-foreground: 45 20% 95%;
-    --sidebar-border: 225 15% 18%;
-    --sidebar-ring: 43 96% 56%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 20% 15%;
+    --sidebar-primary: 230 85% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 96%;
+    --sidebar-accent-foreground: 220 20% 25%;
+    --sidebar-border: 220 15% 90%;
+    --sidebar-ring: 230 85% 60%;
   }
 }
 
@@ -84,34 +82,34 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Outfit', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     @apply font-bold tracking-tight;
   }
 }
 
 @layer components {
   .glass {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 shadow-sm;
   }
 
-  .text-gradient-gold {
+  .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-gold);
+    background-image: var(--gradient-primary);
   }
 
-  .btn-gold {
-    background: var(--gradient-gold);
-    @apply text-background font-semibold shadow-lg hover:shadow-xl transition-all duration-300;
-    box-shadow: var(--shadow-gold);
+  .btn-primary-glow {
+    background: var(--gradient-primary);
+    @apply text-white font-semibold shadow-lg transition-all duration-300;
+    box-shadow: var(--shadow-primary);
   }
 
-  .btn-gold:hover {
+  .btn-primary-glow:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 50px hsl(43 96% 56% / 0.5);
+    box-shadow: 0 6px 28px hsl(230 85% 60% / 0.35);
   }
 
   .card-hover {
@@ -120,26 +118,22 @@
 
   .card-hover:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-card);
-  }
-
-  .glow-gold {
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-lg);
   }
 
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
 
-  .animate-pulse-gold {
-    animation: pulse-gold 2s ease-in-out infinite;
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
   }
 
   .animate-shimmer {
     background: linear-gradient(
       90deg,
       transparent 0%,
-      hsl(43 96% 56% / 0.1) 50%,
+      hsl(230 85% 60% / 0.08) 50%,
       transparent 100%
     );
     background-size: 200% 100%;
@@ -150,9 +144,14 @@
 @layer utilities {
   .bg-grid-pattern {
     background-image: 
-      linear-gradient(hsl(225 15% 15% / 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(225 15% 15% / 0.5) 1px, transparent 1px);
-    background-size: 50px 50px;
+      linear-gradient(hsl(220 15% 92% / 0.8) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(220 15% 92% / 0.8) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .bg-dots-pattern {
+    background-image: radial-gradient(circle, hsl(220 15% 85%) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }
 
@@ -161,18 +160,16 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-12px);
   }
 }
 
-@keyframes pulse-gold {
+@keyframes pulse-soft {
   0%, 100% {
     opacity: 1;
-    box-shadow: 0 0 20px hsl(43 96% 56% / 0.4);
   }
   50% {
-    opacity: 0.8;
-    box-shadow: 0 0 40px hsl(43 96% 56% / 0.6);
+    opacity: 0.7;
   }
 }
 
@@ -192,14 +189,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(225 25% 6%);
+  background: hsl(220 15% 96%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(225 15% 25%);
+  background: hsl(220 15% 80%);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(43 96% 56% / 0.5);
+  background: hsl(230 85% 60%);
 }

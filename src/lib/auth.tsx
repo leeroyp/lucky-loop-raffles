@@ -12,6 +12,7 @@ interface Profile {
   stripe_customer_id: string | null;
   subscription_tier: "BRONZE" | "SILVER" | "GOLD" | null;
   entries_remaining: number;
+  created_at: string;
 }
 
 interface AuthContextType {

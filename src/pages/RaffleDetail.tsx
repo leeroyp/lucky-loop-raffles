@@ -15,9 +15,9 @@ import {
   Loader2,
   CheckCircle2,
   Shield,
-  ExternalLink,
   AlertCircle,
-  Gift
+  Gift,
+  Sparkles
 } from "lucide-react";
 import { formatDistanceToNow, format, isPast } from "date-fns";
 
@@ -239,7 +239,7 @@ export default function RaffleDetail() {
 
   return (
     <Layout>
-      <div className="min-h-screen py-24">
+      <div className="min-h-screen py-24 bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container px-4 max-w-4xl">
           {/* Back Link */}
           <Link
@@ -256,7 +256,7 @@ export default function RaffleDetail() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted shadow-lg">
                 {raffle.image_url ? (
                   <img
                     src={raffle.image_url}
@@ -264,8 +264,8 @@ export default function RaffleDetail() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
-                    <Gift className="w-24 h-24 text-primary/50" />
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                    <Gift className="w-24 h-24 text-primary/30" />
                   </div>
                 )}
 
@@ -273,7 +273,7 @@ export default function RaffleDetail() {
                 <div
                   className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-bold ${
                     isLive
-                      ? "bg-success text-success-foreground"
+                      ? "bg-green-500 text-white"
                       : "bg-muted text-muted-foreground"
                   }`}
                 >
@@ -297,14 +297,14 @@ export default function RaffleDetail() {
 
               {/* Stats */}
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="p-4 rounded-xl bg-muted/50 border border-border/50">
+                <div className="p-4 rounded-xl bg-card border border-border">
                   <div className="flex items-center gap-2 text-muted-foreground mb-1">
                     <Users className="w-4 h-4" />
                     <span className="text-sm">Total Entries</span>
                   </div>
                   <p className="text-2xl font-bold">{entryCount}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-muted/50 border border-border/50">
+                <div className="p-4 rounded-xl bg-card border border-border">
                   <div className="flex items-center gap-2 text-muted-foreground mb-1">
                     <Clock className="w-4 h-4" />
                     <span className="text-sm">
@@ -340,7 +340,6 @@ export default function RaffleDetail() {
                   {user ? (
                     <>
                       <Button
-                        variant="gold"
                         className="w-full gap-2"
                         size="lg"
                         onClick={handleEnterRaffle}
@@ -375,7 +374,7 @@ export default function RaffleDetail() {
                     </>
                   ) : (
                     <Link to="/auth?mode=signup">
-                      <Button variant="gold" className="w-full gap-2" size="lg">
+                      <Button className="w-full gap-2" size="lg">
                         Sign Up to Enter
                       </Button>
                     </Link>
@@ -388,22 +387,22 @@ export default function RaffleDetail() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-6 rounded-2xl bg-gradient-card border border-gold/30 shadow-gold"
+                  className="p-6 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 shadow-md"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center">
-                      <Trophy className="w-6 h-6 text-background" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-400 flex items-center justify-center">
+                      <Trophy className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gold font-medium">Winner</p>
-                      <p className="text-xl font-bold">
+                      <p className="text-sm text-yellow-700 font-medium">Winner</p>
+                      <p className="text-xl font-bold text-foreground">
                         {winner.full_name || winner.email.split("@")[0]}
                       </p>
                     </div>
                   </div>
 
                   {raffle.winner_id === user?.id && (
-                    <div className="flex items-center gap-2 text-gold text-sm">
+                    <div className="flex items-center gap-2 text-yellow-700 text-sm">
                       <Sparkles className="w-4 h-4" />
                       <span>Congratulations, you won!</span>
                     </div>
@@ -419,7 +418,7 @@ export default function RaffleDetail() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-12 p-6 rounded-2xl bg-card border border-border/50"
+              className="mt-12 p-6 rounded-2xl bg-card border border-border"
             >
               <div className="flex items-center gap-3 mb-6">
                 <Shield className="w-6 h-6 text-primary" />
@@ -448,7 +447,7 @@ export default function RaffleDetail() {
                   </code>
                 </div>
 
-                <div className="pt-4 border-t border-border/50">
+                <div className="pt-4 border-t border-border">
                   <p className="text-sm text-muted-foreground mb-2">
                     <strong>How to verify:</strong>
                   </p>
