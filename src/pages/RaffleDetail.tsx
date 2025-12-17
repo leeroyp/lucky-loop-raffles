@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { CountdownTimer } from "@/components/CountdownTimer";
 import {
   Ticket,
   Clock,
@@ -19,7 +20,7 @@ import {
   Gift,
   Sparkles
 } from "lucide-react";
-import { formatDistanceToNow, format, isPast } from "date-fns";
+import { format, isPast } from "date-fns";
 
 interface Raffle {
   id: string;
@@ -293,6 +294,26 @@ export default function RaffleDetail() {
                 <p className="text-muted-foreground mb-6">{raffle.description}</p>
               )}
 
+              {/* Prominent Countdown Timer */}
+              {isLive && !hasEnded && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-primary/10 border border-primary/20 mb-6"
+                >
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wider font-medium">
+                      Draw ends in
+                    </p>
+                    <CountdownTimer 
+                      endDate={new Date(raffle.end_at)} 
+                      showIcon={false}
+                      className="text-3xl md:text-4xl font-black justify-center"
+                    />
+                  </div>
+                </motion.div>
+              )}
+
               {/* Stats */}
               <div className="grid grid-cols-2 gap-4 mb-8">
                 <div className="p-4 rounded-xl bg-card border border-border">
@@ -306,13 +327,11 @@ export default function RaffleDetail() {
                   <div className="flex items-center gap-2 text-muted-foreground mb-1">
                     <Clock className="w-4 h-4" />
                     <span className="text-sm">
-                      {isLive ? "Time Left" : "Ended"}
+                      {isLive ? "Draw Date" : "Ended"}
                     </span>
                   </div>
                   <p className="text-2xl font-bold">
-                    {isLive && !hasEnded
-                      ? formatDistanceToNow(new Date(raffle.end_at))
-                      : format(new Date(raffle.end_at), "MMM d, yyyy")}
+                    {format(new Date(raffle.end_at), "MMM d, yyyy")}
                   </p>
                 </div>
               </div>
