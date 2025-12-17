@@ -76,13 +76,11 @@ export default function RaffleDetail() {
 
     setRaffle(raffleData as Raffle);
 
-    // Fetch entry count
-    const { count } = await supabase
-      .from("entries")
-      .select("*", { count: "exact", head: true })
-      .eq("raffle_id", id);
+    // Fetch entry count using the public function
+    const { data: countData } = await supabase
+      .rpc("get_raffle_entry_count", { raffle_uuid: id });
 
-    setEntryCount(count || 0);
+    setEntryCount(countData || 0);
 
     // Fetch user's entries if logged in
     if (user) {
@@ -387,14 +385,14 @@ export default function RaffleDetail() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-6 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 shadow-md"
+                  className="p-6 rounded-2xl bg-accent/10 border border-accent/30 shadow-md"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-400 flex items-center justify-center">
-                      <Trophy className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-accent to-primary flex items-center justify-center">
+                      <Trophy className="w-6 h-6 text-accent-foreground" />
                     </div>
                     <div>
-                      <p className="text-sm text-yellow-700 font-medium">Winner</p>
+                      <p className="text-sm text-accent font-medium">Winner</p>
                       <p className="text-xl font-bold text-foreground">
                         {winner.full_name || winner.email.split("@")[0]}
                       </p>
@@ -402,7 +400,7 @@ export default function RaffleDetail() {
                   </div>
 
                   {raffle.winner_id === user?.id && (
-                    <div className="flex items-center gap-2 text-yellow-700 text-sm">
+                    <div className="flex items-center gap-2 text-accent text-sm">
                       <Sparkles className="w-4 h-4" />
                       <span>Congratulations, you won!</span>
                     </div>
