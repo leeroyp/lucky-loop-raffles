@@ -293,7 +293,6 @@ export default function ManageRaffle() {
               <div className="flex gap-2">
                 {isDraft && (
                   <Button
-                    variant="gold"
                     onClick={handleSetLive}
                     disabled={actionLoading}
                     className="gap-2"
@@ -308,10 +307,9 @@ export default function ManageRaffle() {
                 )}
                 {isLive && entries.length > 0 && (
                   <Button
-                    variant="gold"
                     onClick={handleDrawWinner}
                     disabled={actionLoading}
-                    className="gap-2"
+                    className="gap-2 bg-accent hover:bg-accent/90"
                   >
                     {actionLoading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
