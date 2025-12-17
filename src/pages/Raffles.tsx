@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { CountdownTimer } from "@/components/CountdownTimer";
 import { 
   Ticket, 
   Clock, 
@@ -13,7 +14,7 @@ import {
   Loader2,
   Calendar
 } from "lucide-react";
-import { formatDistanceToNow, format, isPast } from "date-fns";
+import { format } from "date-fns";
 
 interface Raffle {
   id: string;
@@ -203,25 +204,19 @@ export default function Raffles() {
                             <Users className="w-4 h-4" />
                             <span>{raffle.entry_count} entries</span>
                           </div>
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            {raffle.status === "LIVE" ? (
-                              <>
-                                <Clock className="w-4 h-4" />
-                                <span>
-                                  {isPast(new Date(raffle.end_at))
-                                    ? "Ending soon"
-                                    : `${formatDistanceToNow(new Date(raffle.end_at))} left`}
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <Calendar className="w-4 h-4" />
-                                <span>
-                                  Ended {format(new Date(raffle.end_at), "MMM d")}
-                                </span>
-                              </>
-                            )}
-                          </div>
+                          {raffle.status === "LIVE" ? (
+                            <CountdownTimer 
+                              endDate={new Date(raffle.end_at)} 
+                              className="text-muted-foreground"
+                            />
+                          ) : (
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <Calendar className="w-4 h-4" />
+                              <span>
+                                Ended {format(new Date(raffle.end_at), "MMM d")}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {raffle.status === "CLOSED" && raffle.winner_id && (
