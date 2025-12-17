@@ -3,6 +3,17 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -18,7 +29,8 @@ import {
   Sparkles,
   AlertCircle,
   CheckCircle2,
-  Shield
+  Shield,
+  AlertTriangle
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -306,18 +318,55 @@ export default function ManageRaffle() {
                   </Button>
                 )}
                 {isLive && entries.length > 0 && (
-                  <Button
-                    onClick={handleDrawWinner}
-                    disabled={actionLoading}
-                    className="gap-2 bg-accent hover:bg-accent/90"
-                  >
-                    {actionLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Trophy className="w-4 h-4" />
-                    )}
-                    Draw Winner
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        disabled={actionLoading}
+                        className="gap-2 bg-accent hover:bg-accent/90"
+                      >
+                        {actionLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trophy className="w-4 h-4" />
+                        )}
+                        Draw Winner
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="flex items-center gap-2">
+                          <AlertTriangle className="w-5 h-5 text-destructive" />
+                          Confirm Winner Draw
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="space-y-2">
+                          <p>
+                            You are about to draw a winner for <strong>"{raffle.title}"</strong>.
+                          </p>
+                          <p>
+                            This action will:
+                          </p>
+                          <ul className="list-disc list-inside text-sm space-y-1 mt-2">
+                            <li>Close the raffle permanently</li>
+                            <li>Select a winner from {entries.length} entries</li>
+                            <li>Reveal the cryptographic seed</li>
+                          </ul>
+                          <p className="font-medium text-foreground mt-3">
+                            This action cannot be undone.
+                          </p>
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDrawWinner}
+                          className="bg-accent hover:bg-accent/90"
+                        >
+                          <Trophy className="w-4 h-4 mr-2" />
+                          Draw Winner
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 )}
               </div>
             </div>
