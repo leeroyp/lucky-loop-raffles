@@ -113,6 +113,25 @@ export default function RaffleDetail() {
     setIsLoading(false);
   };
 
+  const sendNotification = async (type: string, entryCount?: number) => {
+    if (!user || !profile || !raffle) return;
+    
+    try {
+      await supabase.functions.invoke("send-notification", {
+        body: {
+          type,
+          userId: user.id,
+          raffleId: raffle.id,
+          email: profile.email,
+          userName: profile.full_name || profile.email.split("@")[0],
+          entryCount,
+        },
+      });
+    } catch (error) {
+      console.error("Failed to send notification:", error);
+    }
+  };
+
   const handleEnterRaffle = async () => {
     if (!user || !profile || !raffle) return;
 
@@ -149,6 +168,9 @@ export default function RaffleDetail() {
 
       await refreshProfile();
       await fetchRaffleData();
+
+      // Send entry confirmation email
+      await sendNotification("entry_confirmation", userEntries + 1);
 
       toast({
         title: "Entry submitted!",
@@ -191,6 +213,9 @@ export default function RaffleDetail() {
       if (error) throw error;
 
       await fetchRaffleData();
+
+      // Send entry confirmation email
+      await sendNotification("entry_confirmation", userEntries + 1);
 
       toast({
         title: "Free entry submitted!",

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
+import { EntryHistory } from "@/components/EntryHistory";
 import { 
   User, 
   Ticket, 
@@ -12,7 +13,8 @@ import {
   Calendar, 
   ArrowRight,
   LogOut,
-  Shield
+  Shield,
+  History
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -166,6 +168,17 @@ export default function Account() {
                   </span>
                 </div>
               </div>
+            </div>
+
+            {/* Entry History */}
+            <div className="p-6 rounded-2xl bg-card border border-border/50 mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <History className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-semibold">Entry History</h3>
+              </div>
+              <EntryHistory userId={user?.id || ""} />
             </div>
 
             {/* Sign Out */}

@@ -20,6 +20,7 @@ import Privacy from "./pages/Privacy";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CreateRaffle from "./pages/admin/CreateRaffle";
 import ManageRaffle from "./pages/admin/ManageRaffle";
+import Analytics from "./pages/admin/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,11 @@ const App = () => (
                 <Route path="/admin/raffles/:id" element={
                   <ProtectedRoute requireAdmin>
                     <ManageRaffle />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/analytics" element={
+                  <ProtectedRoute requireAdmin>
+                    <Analytics />
                   </ProtectedRoute>
                 } />
                 <Route path="*" element={<NotFound />} />
