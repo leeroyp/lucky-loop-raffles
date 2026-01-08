@@ -13,7 +13,8 @@ import {
   Trophy,
   Plus,
   ArrowRight,
-  Clock
+  Clock,
+  BarChart3
 } from "lucide-react";
 
 interface Stats {
@@ -159,6 +160,12 @@ export default function AdminDashboard() {
               <Button variant="gold" className="gap-2">
                 <Plus className="w-4 h-4" />
                 New Raffle
+              </Button>
+            </Link>
+            <Link to="/admin/analytics">
+              <Button variant="outline" className="gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Analytics
               </Button>
             </Link>
           </motion.div>

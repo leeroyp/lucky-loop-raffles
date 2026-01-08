@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "@/components/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Loader2, Ticket, Calendar, Image } from "lucide-react";
+import { ArrowLeft, Loader2, Ticket, Calendar } from "lucide-react";
 
 const raffleSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100),
@@ -168,35 +169,8 @@ export default function CreateRaffle() {
                 )}
               </div>
 
-              {/* Image URL */}
-              <div className="space-y-2">
-                <Label htmlFor="imageUrl" className="flex items-center gap-2">
-                  <Image className="w-4 h-4" />
-                  Prize Image URL
-                </Label>
-                <Input
-                  id="imageUrl"
-                  type="url"
-                  placeholder="https://example.com/prize-image.jpg"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                />
-                {errors.imageUrl && (
-                  <p className="text-sm text-destructive">{errors.imageUrl}</p>
-                )}
-                {imageUrl && (
-                  <div className="mt-2 rounded-lg overflow-hidden border border-border/50">
-                    <img
-                      src={imageUrl}
-                      alt="Preview"
-                      className="w-full h-48 object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
+              {/* Image Upload */}
+              <ImageUpload value={imageUrl} onChange={setImageUrl} />
 
               {/* End Date */}
               <div className="space-y-2">
