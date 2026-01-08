@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 import { useAuth } from "@/lib/auth";
 import { 
   User, 
@@ -49,6 +50,7 @@ export default function Account() {
 
   return (
     <Layout>
+      <SEO title="My Account" description="Manage your LuckyLoop account, view entries, and subscription status." />
       <div className="min-h-screen py-24">
         <div className="container px-4 max-w-3xl">
           <motion.div

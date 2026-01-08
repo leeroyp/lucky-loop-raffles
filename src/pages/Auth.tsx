@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { SEO } from "@/components/SEO";
 import { Ticket, Mail, Lock, User, Loader2, ArrowLeft } from "lucide-react";
 
 const loginSchema = z.object({
@@ -116,6 +117,10 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex">
+      <SEO 
+        title={mode === "login" ? "Sign In" : "Create Account"} 
+        description={mode === "login" ? "Sign in to your LuckyLoop account" : "Create a free LuckyLoop account to start entering raffles"}
+      />
       {/* Left Panel - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <motion.div
@@ -221,7 +226,7 @@ export default function Auth() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-2">
             <p className="text-muted-foreground">
               {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
               <button
@@ -232,6 +237,13 @@ export default function Auth() {
                 {mode === "login" ? "Sign up" : "Sign in"}
               </button>
             </p>
+            {mode === "login" && (
+              <p>
+                <Link to="/forgot-password" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Forgot your password?
+                </Link>
+              </p>
+            )}
           </div>
         </motion.div>
       </div>

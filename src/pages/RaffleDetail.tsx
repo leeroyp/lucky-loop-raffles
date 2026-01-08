@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -238,6 +239,10 @@ export default function RaffleDetail() {
 
   return (
     <Layout>
+      <SEO 
+        title={raffle.title} 
+        description={raffle.description || `Enter the ${raffle.title} raffle for a chance to win!`}
+      />
       <div className="min-h-screen py-24 bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container px-4 max-w-4xl">
           {/* Back Link */}
