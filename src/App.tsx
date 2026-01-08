@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/lib/auth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -40,12 +41,28 @@ const App = () => (
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/raffles" element={<Raffles />} />
                 <Route path="/raffles/:id" element={<RaffleDetail />} />
-                <Route path="/account" element={<Account />} />
+                <Route path="/account" element={
+                  <ProtectedRoute>
+                    <Account />
+                  </ProtectedRoute>
+                } />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/raffles/new" element={<CreateRaffle />} />
-                <Route path="/admin/raffles/:id" element={<ManageRaffle />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute requireAdmin>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/raffles/new" element={
+                  <ProtectedRoute requireAdmin>
+                    <CreateRaffle />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/raffles/:id" element={
+                  <ProtectedRoute requireAdmin>
+                    <ManageRaffle />
+                  </ProtectedRoute>
+                } />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

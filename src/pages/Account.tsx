@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { 
   User, 
@@ -32,17 +32,24 @@ export default function Account() {
   const { user, profile, isAdmin, isLoading, signOut } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      navigate("/auth");
-    }
-  }, [user, isLoading, navigate]);
-
-  if (isLoading || !user || !profile) {
+  if (isLoading || !profile) {
     return (
       <Layout>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-pulse text-muted-foreground">Loading...</div>
+        <div className="min-h-screen py-24">
+          <div className="container px-4 max-w-3xl">
+            <div className="flex items-center gap-4 mb-8">
+              <Skeleton className="w-16 h-16 rounded-2xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4 mb-8">
+              <Skeleton className="h-32 rounded-2xl" />
+              <Skeleton className="h-32 rounded-2xl" />
+            </div>
+            <Skeleton className="h-48 rounded-2xl" />
+          </div>
         </div>
       </Layout>
     );

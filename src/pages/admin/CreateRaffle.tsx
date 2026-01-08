@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { z } from "zod";
@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Loader2, Ticket, Calendar, Image } from "lucide-react";
@@ -35,7 +34,6 @@ function generateSeed(): string {
 }
 
 export default function CreateRaffle() {
-  const { user, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -45,12 +43,6 @@ export default function CreateRaffle() {
   const [endAt, setEndAt] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading && (!user || !isAdmin)) {
-      navigate("/");
-    }
-  }, [user, isAdmin, isLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,15 +106,6 @@ export default function CreateRaffle() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </Layout>
-    );
-  }
 
   // Get min datetime (now + 1 hour)
   const minDateTime = new Date(Date.now() + 3600000).toISOString().slice(0, 16);

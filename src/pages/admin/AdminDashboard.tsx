@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
+import { StatsCardSkeleton, TableRowSkeleton } from "@/components/ui/skeleton-card";
+import { EmptyState } from "@/components/EmptyState";
 import {
   Ticket,
   Users,
   Trophy,
   Plus,
   ArrowRight,
-  Loader2,
-  Clock,
-  CheckCircle2
+  Clock
 } from "lucide-react";
 
 interface Stats {
@@ -32,8 +32,7 @@ interface RecentRaffle {
 }
 
 export default function AdminDashboard() {
-  const { user, isAdmin, isLoading } = useAuth();
-  const navigate = useNavigate();
+  const { isAdmin } = useAuth();
   const [stats, setStats] = useState<Stats>({
     totalRaffles: 0,
     liveRaffles: 0,
@@ -42,12 +41,6 @@ export default function AdminDashboard() {
   });
   const [recentRaffles, setRecentRaffles] = useState<RecentRaffle[]>([]);
   const [loadingStats, setLoadingStats] = useState(true);
-
-  useEffect(() => {
-    if (!isLoading && (!user || !isAdmin)) {
-      navigate("/");
-    }
-  }, [user, isAdmin, isLoading, navigate]);
 
   useEffect(() => {
     if (isAdmin) {
@@ -111,18 +104,34 @@ export default function AdminDashboard() {
     setLoadingStats(false);
   };
 
-  if (isLoading || loadingStats) {
+  if (loadingStats) {
     return (
       <Layout>
-        <div className="min-h-screen flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="min-h-screen py-24">
+          <div className="container px-4">
+            <div className="flex items-center justify-between mb-8">
+              <div className="space-y-2">
+                <div className="h-8 w-48 bg-muted rounded animate-pulse" />
+                <div className="h-4 w-64 bg-muted rounded animate-pulse" />
+              </div>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+              {[...Array(4)].map((_, i) => (
+                <StatsCardSkeleton key={i} />
+              ))}
+            </div>
+            <div className="rounded-2xl bg-card border border-border/50 overflow-hidden">
+              <div className="p-6 border-b border-border/50">
+                <div className="h-6 w-32 bg-muted rounded animate-pulse" />
+              </div>
+              {[...Array(3)].map((_, i) => (
+                <TableRowSkeleton key={i} />
+              ))}
+            </div>
+          </div>
         </div>
       </Layout>
     );
-  }
-
-  if (!isAdmin) {
-    return null;
   }
 
   const statCards = [
