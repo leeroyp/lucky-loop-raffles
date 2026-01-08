@@ -14,7 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -25,10 +24,8 @@ import {
   Clock,
   Trophy,
   Play,
-  Square,
   Sparkles,
   AlertCircle,
-  CheckCircle2,
   Shield,
   AlertTriangle
 } from "lucide-react";
@@ -65,7 +62,6 @@ async function sha256(message: string): Promise<string> {
 
 export default function ManageRaffle() {
   const { id } = useParams<{ id: string }>();
-  const { user, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -76,16 +72,10 @@ export default function ManageRaffle() {
   const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && (!user || !isAdmin)) {
-      navigate("/");
-    }
-  }, [user, isAdmin, isLoading, navigate]);
-
-  useEffect(() => {
-    if (id && isAdmin) {
+    if (id) {
       fetchRaffleData();
     }
-  }, [id, isAdmin]);
+  }, [id]);
 
   const fetchRaffleData = async () => {
     if (!id) return;
@@ -220,7 +210,7 @@ export default function ManageRaffle() {
     }
   };
 
-  if (isLoading || loadingRaffle) {
+  if (loadingRaffle) {
     return (
       <Layout>
         <div className="min-h-screen flex items-center justify-center">

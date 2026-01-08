@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { CountdownTimer } from "@/components/CountdownTimer";
+import { RaffleCardSkeleton } from "@/components/ui/skeleton-card";
+import { EmptyState } from "@/components/EmptyState";
 import { 
   Ticket, 
   Clock, 
   Users, 
   Trophy,
   Sparkles,
-  Loader2,
   Calendar
 } from "lucide-react";
 import { format } from "date-fns";
@@ -141,23 +142,19 @@ export default function Raffles() {
 
           {/* Raffles Grid */}
           {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <RaffleCardSkeleton key={i} />
+              ))}
             </div>
           ) : filteredRaffles.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
-              <Ticket className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No raffles found</h3>
-              <p className="text-muted-foreground">
-                {filter === "all" 
-                  ? "Check back soon for new raffles!" 
-                  : `No ${filter.toLowerCase()} raffles at the moment.`}
-              </p>
-            </motion.div>
+            <EmptyState
+              icon={Ticket}
+              title="No raffles found"
+              description={filter === "all" 
+                ? "Check back soon for new raffles!" 
+                : `No ${filter.toLowerCase()} raffles at the moment.`}
+            />
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredRaffles.map((raffle, index) => (

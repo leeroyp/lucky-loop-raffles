@@ -171,9 +171,18 @@ export function Navbar() {
                         {profile?.entries_remaining || 0} entries remaining
                       </span>
                     </div>
+                    <Link
+                      to="/account"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Button variant="ghost" className="w-full justify-start">
+                        <User className="w-4 h-4 mr-2" />
+                        My Account
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
-                      className="justify-start"
+                      className="justify-start text-muted-foreground"
                       onClick={() => {
                         signOut();
                         setMobileMenuOpen(false);
