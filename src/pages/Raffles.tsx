@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { 
@@ -81,6 +82,10 @@ export default function Raffles() {
 
   return (
     <Layout>
+      <SEO 
+        title="Browse Raffles" 
+        description="Enter live raffles for a chance to win amazing prizes. All draws are provably fair and transparent."
+      />
       <div className="min-h-screen py-24 bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="container px-4">
           {/* Header */}

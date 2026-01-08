@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 import { useAuth } from "@/lib/auth";
 import { 
   Ticket, 
@@ -68,6 +69,10 @@ export default function Pricing() {
 
   return (
     <Layout>
+      <SEO 
+        title="Pricing" 
+        description="Choose a LuckyLoop subscription plan. Get monthly raffle entries with Bronze, Silver, or Gold tiers. Cancel anytime."
+      />
       <div className="min-h-screen py-24 bg-gradient-to-b from-background via-muted/20 to-background">
         {/* Header */}
         <div className="container px-4">
