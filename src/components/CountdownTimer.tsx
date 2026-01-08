@@ -59,13 +59,13 @@ export function CountdownTimer({ endDate, className = "", showIcon = true }: Cou
 
   const { days, hours, minutes, seconds } = timeLeft;
 
-  // Compact format for cards
+  // Always show seconds for a dynamic feel
   if (days > 0) {
     return (
       <div className={`flex items-center gap-2 ${className}`}>
         {showIcon && <Clock className="w-4 h-4" />}
         <span className="font-mono tabular-nums">
-          {days}d {hours}h {minutes}m
+          {days}d {hours}h {minutes}m {seconds}s
         </span>
       </div>
     );
