@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
 import { Footer } from "@/components/Footer";
 import { SEO } from "@/components/SEO";
+import { useAuth } from "@/lib/auth";
 import { 
   Ticket, 
   Shield, 
@@ -44,6 +45,8 @@ const tiers = [
 ];
 
 export default function Index() {
+  const { user } = useAuth();
+
   return (
     <Layout>
       <SEO />
@@ -244,21 +247,30 @@ export default function Index() {
               Your next big win is just a click away.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/auth?mode=signup">
-                <Button variant="hero" size="xl" className="gap-2">
-                  Create Free Account
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/pricing">
+                  <Button variant="hero" size="xl" className="gap-2">
+                    View Subscription Plans
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth?mode=signup">
+                  <Button variant="hero" size="xl" className="gap-2">
+                    Create Free Account
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </Link>
+              )}
             </div>
             <div className="mt-8 flex items-center justify-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                No credit card required
+                {user ? "Cancel anytime" : "No credit card required"}
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500" />
-                Free entries available
+                {user ? "Get entries monthly" : "Free entries available"}
               </div>
             </div>
           </motion.div>
