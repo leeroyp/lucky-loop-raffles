@@ -176,6 +176,24 @@ export default function RaffleDetail() {
         title: "Entry submitted!",
         description: "Good luck! You've been entered into this raffle.",
       });
+
+      // Show subscription prompt if user ran out of entries and has no subscription
+      if (profile.entries_remaining - 1 <= 0 && !profile.subscription_tier) {
+        setTimeout(() => {
+          toast({
+            title: "Running low on entries?",
+            description: "Subscribe to get more entries and increase your chances of winning!",
+            action: (
+              <Link to="/pricing">
+                <Button size="sm" variant="gold" className="gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  Subscribe
+                </Button>
+              </Link>
+            ),
+          });
+        }, 1500);
+      }
     } catch (error: any) {
       toast({
         title: "Error entering raffle",
