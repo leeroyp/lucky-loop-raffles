@@ -220,10 +220,6 @@ export type Database = {
     }
     Functions: {
       get_raffle_entry_count: { Args: { raffle_uuid: string }; Returns: number }
-      get_winner_display_name: {
-        Args: { winner_user_id: string }
-        Returns: string
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
