@@ -210,10 +210,28 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      winner_display: {
+        Row: {
+          display_name: string | null
+          id: string | null
+        }
+        Insert: {
+          display_name?: never
+          id?: string | null
+        }
+        Update: {
+          display_name?: never
+          id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_raffle_entry_count: { Args: { raffle_uuid: string }; Returns: number }
+      get_winner_display_name: {
+        Args: { winner_user_id: string }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
