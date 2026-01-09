@@ -39,8 +39,7 @@ interface Raffle {
 }
 
 interface WinnerProfile {
-  full_name: string | null;
-  email: string;
+  display_name: string;
 }
 
 export default function RaffleDetail() {
@@ -102,11 +101,11 @@ export default function RaffleDetail() {
       setHasNpnEntry(entries.some((e) => e.source === "NPN"));
     }
 
-    // Fetch winner profile if raffle is closed
+    // Fetch anonymized winner display name if raffle is closed
     if (raffleData.winner_id) {
       const { data: winnerData } = await supabase
-        .from("profiles")
-        .select("full_name, email")
+        .from("winner_display")
+        .select("display_name")
         .eq("id", raffleData.winner_id)
         .single();
 
@@ -546,7 +545,7 @@ export default function RaffleDetail() {
                     >
                       <DrawAnimation
                         entries={entryNames}
-                        winnerName={winner.full_name || winner.email.split("@")[0]}
+                        winnerName={winner.display_name}
                         autoPlay={true}
                         onComplete={() => {}}
                         totalEntries={entryCount}
@@ -570,7 +569,7 @@ export default function RaffleDetail() {
                       <div>
                         <p className="text-sm text-accent font-medium">Winner</p>
                         <p className="text-xl font-bold text-foreground">
-                          {winner.full_name || winner.email.split("@")[0]}
+                          {winner.display_name}
                         </p>
                       </div>
                     </div>
