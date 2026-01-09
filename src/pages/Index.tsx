@@ -39,9 +39,9 @@ const features = [
 ];
 
 const tiers = [
-  { name: "Bronze", entries: 3, price: 5, color: "amber-700" },
-  { name: "Silver", entries: 5, price: 10, color: "slate-500" },
-  { name: "Gold", entries: 10, price: 20, color: "yellow-600", featured: true },
+  { name: "Bronze", entries: 3, price: 2.99, color: "amber-700" },
+  { name: "Silver", entries: 5, price: 5.99, color: "slate-500" },
+  { name: "Gold", entries: 10, price: 9.99, color: "yellow-600", featured: true },
 ];
 
 export default function Index() {
