@@ -226,7 +226,6 @@ export type Database = {
           id: string | null
           image_url: string | null
           min_entries: number | null
-          seed: string | null
           seed_hash: string | null
           status: Database["public"]["Enums"]["raffle_status"] | null
           title: string | null
@@ -241,7 +240,6 @@ export type Database = {
           id?: string | null
           image_url?: string | null
           min_entries?: number | null
-          seed?: never
           seed_hash?: string | null
           status?: Database["public"]["Enums"]["raffle_status"] | null
           title?: string | null
@@ -256,7 +254,6 @@ export type Database = {
           id?: string | null
           image_url?: string | null
           min_entries?: number | null
-          seed?: never
           seed_hash?: string | null
           status?: Database["public"]["Enums"]["raffle_status"] | null
           title?: string | null
