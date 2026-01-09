@@ -56,6 +56,7 @@ export default function RaffleDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEntering, setIsEntering] = useState(false);
   const [showDrawAnimation, setShowDrawAnimation] = useState(false);
+  const [showDemoAnimation, setShowDemoAnimation] = useState(false);
   const [entryNames, setEntryNames] = useState<string[]>([]);
 
   useEffect(() => {
@@ -465,6 +466,54 @@ export default function RaffleDetail() {
                         Sign Up to Enter
                       </Button>
                     </Link>
+                  )}
+                </div>
+              )}
+
+              {/* Demo Draw Animation (for live raffles) */}
+              {isLive && !hasEnded && (
+                <div className="mt-6">
+                  {!showDemoAnimation ? (
+                    <Button
+                      variant="ghost"
+                      className="w-full gap-2 text-muted-foreground hover:text-foreground"
+                      onClick={() => setShowDemoAnimation(true)}
+                    >
+                      <Play className="w-4 h-4" />
+                      Preview How the Draw Works
+                    </Button>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="space-y-3"
+                    >
+                      <DrawAnimation
+                        entries={[
+                          "Sarah M.", "Mike T.", "Alex K.", "Jordan P.",
+                          "Taylor R.", "Casey B.", "Morgan L.", "Riley S.",
+                          "Jamie W.", "Quinn D.", "Avery H.", "Drew N."
+                        ]}
+                        winnerName={user ? (profile?.full_name || profile?.email?.split("@")[0] || "You") : "Lucky Winner"}
+                        autoPlay={true}
+                        onComplete={() => {}}
+                        totalEntries={entryCount > 0 ? entryCount : 247}
+                        seed="demo_seed_abc123xyz789"
+                        seedHash="a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456"
+                        drawHash="f6e5d4c3b2a1098765432109876543210fedcba0987654321fedcba09876543"
+                      />
+                      <p className="text-xs text-center text-muted-foreground">
+                        ✨ This is a demo — you could be the real winner!
+                      </p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => setShowDemoAnimation(false)}
+                      >
+                        Close Demo
+                      </Button>
+                    </motion.div>
                   )}
                 </div>
               )}
