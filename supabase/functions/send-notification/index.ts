@@ -10,6 +10,18 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// HTML escape function to prevent XSS in email templates
+const escapeHtml = (text: string): string => {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+};
+
 interface NotificationRequest {
   type: "entry_confirmation" | "raffle_result" | "winner_notification";
   userId?: string;
@@ -46,13 +58,17 @@ const handler = async (req: Request): Promise<Response> => {
     let subject = "";
     let htmlContent = "";
 
+    // Escape user-controlled values to prevent HTML injection
+    const safeUserName = escapeHtml(userName || "there");
+    const safeRaffleTitle = escapeHtml(raffle.title || "Raffle");
+
     if (type === "entry_confirmation") {
-      subject = `Entry Confirmed: ${raffle.title}`;
+      subject = `Entry Confirmed: ${safeRaffleTitle}`;
       htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #7c3aed;">🎟️ Entry Confirmed!</h1>
-          <p>Hi ${userName || "there"},</p>
-          <p>Your entry into <strong>${raffle.title}</strong> has been confirmed!</p>
+          <p>Hi ${safeUserName},</p>
+          <p>Your entry into <strong>${safeRaffleTitle}</strong> has been confirmed!</p>
           <p>You now have <strong>${entryCount || 1} ${(entryCount || 1) === 1 ? "entry" : "entries"}</strong> in this raffle.</p>
           <div style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); padding: 20px; border-radius: 12px; margin: 24px 0;">
             <p style="color: white; margin: 0; font-size: 18px; font-weight: bold;">Good luck! 🍀</p>
@@ -61,12 +77,12 @@ const handler = async (req: Request): Promise<Response> => {
         </div>
       `;
     } else if (type === "winner_notification") {
-      subject = `🎉 Congratulations! You won: ${raffle.title}`;
+      subject = `🎉 Congratulations! You won: ${safeRaffleTitle}`;
       htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #eab308;">🏆 You're a Winner!</h1>
-          <p>Hi ${userName || "there"},</p>
-          <p>Amazing news! You've won the <strong>${raffle.title}</strong> raffle!</p>
+          <p>Hi ${safeUserName},</p>
+          <p>Amazing news! You've won the <strong>${safeRaffleTitle}</strong> raffle!</p>
           <div style="background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%); padding: 24px; border-radius: 12px; margin: 24px 0; text-align: center;">
             <p style="color: white; margin: 0; font-size: 24px; font-weight: bold;">🎉 CONGRATULATIONS! 🎉</p>
           </div>
@@ -76,12 +92,12 @@ const handler = async (req: Request): Promise<Response> => {
       `;
     } else if (type === "raffle_result") {
       // Notify non-winners about raffle closing
-      subject = `Raffle Results: ${raffle.title}`;
+      subject = `Raffle Results: ${safeRaffleTitle}`;
       htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #7c3aed;">📋 Raffle Results</h1>
-          <p>Hi ${userName || "there"},</p>
-          <p>The <strong>${raffle.title}</strong> raffle has ended and a winner has been drawn.</p>
+          <p>Hi ${safeUserName},</p>
+          <p>The <strong>${safeRaffleTitle}</strong> raffle has ended and a winner has been drawn.</p>
           <p>Unfortunately, you weren't selected this time, but don't worry – there are more raffles coming!</p>
           <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin: 24px 0; text-align: center;">
             <p style="color: #374151; margin: 0;">Better luck next time! 🍀</p>
@@ -106,11 +122,15 @@ const handler = async (req: Request): Promise<Response> => {
         throw new Error("User profile not found");
       }
 
+      // Escape profile name and regenerate content with it
+      const safeProfileName = escapeHtml(profile.full_name || "there");
+      const updatedHtmlContent = htmlContent.replace(safeUserName, safeProfileName);
+
       const emailResponse = await resend.emails.send({
         from: "LuckyLoop <onboarding@resend.dev>",
         to: [profile.email],
         subject,
-        html: htmlContent.replace(userName || "there", profile.full_name || "there"),
+        html: updatedHtmlContent,
       });
 
       console.log("Email sent to:", profile.email, emailResponse);
