@@ -32,7 +32,6 @@ interface Raffle {
   image_url: string | null;
   status: "DRAFT" | "LIVE" | "CLOSED";
   end_at: string;
-  seed: string;
   seed_hash: string;
   draw_hash: string | null;
   winner_id: string | null;
@@ -151,24 +150,24 @@ export default function RaffleDetail() {
     setIsEntering(true);
 
     try {
-      // Create entry
-      const { error: entryError } = await supabase
-        .from("entries")
-        .insert({
-          raffle_id: raffle.id,
-          user_id: user.id,
-          source: "SUBSCRIPTION",
+      // Use atomic database function to prevent race conditions
+      const { data: success, error } = await supabase
+        .rpc("submit_raffle_entry", {
+          raffle_uuid: raffle.id,
+          entry_type: "SUBSCRIPTION",
         });
 
-      if (entryError) throw entryError;
+      if (error) throw error;
 
-      // Decrement entries_remaining
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ entries_remaining: profile.entries_remaining - 1 })
-        .eq("id", user.id);
-
-      if (updateError) throw updateError;
+      if (!success) {
+        toast({
+          title: "No entries remaining",
+          description: "Subscribe to get more entries or use the free NPN option.",
+          variant: "destructive",
+        });
+        await refreshProfile();
+        return;
+      }
 
       await refreshProfile();
       await fetchRaffleData();
@@ -224,15 +223,23 @@ export default function RaffleDetail() {
     setIsEntering(true);
 
     try {
-      const { error } = await supabase
-        .from("entries")
-        .insert({
-          raffle_id: raffle.id,
-          user_id: user.id,
-          source: "NPN",
+      // Use atomic database function to prevent race conditions
+      const { data: success, error } = await supabase
+        .rpc("submit_raffle_entry", {
+          raffle_uuid: raffle.id,
+          entry_type: "NPN",
         });
 
       if (error) throw error;
+
+      if (!success) {
+        toast({
+          title: "Error submitting entry",
+          description: "Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
 
       await fetchRaffleData();
 
