@@ -43,10 +43,10 @@ export default function Raffles() {
   }, []);
 
   const fetchRaffles = async () => {
+    // Use public_raffles view which hides seeds until draw is complete
     const { data: rafflesData, error } = await supabase
-      .from("raffles")
+      .from("public_raffles")
       .select("*")
-      .in("status", ["LIVE", "CLOSED"])
       .order("created_at", { ascending: false });
 
     if (error) {

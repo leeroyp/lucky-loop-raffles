@@ -67,12 +67,12 @@ export default function RaffleDetail() {
   const fetchRaffleData = async () => {
     if (!id) return;
 
-    // Fetch raffle
+    // Use public_raffles view which hides seeds until draw is complete
     const { data: raffleData, error } = await supabase
-      .from("raffles")
+      .from("public_raffles")
       .select("*")
       .eq("id", id)
-      .single();
+      .maybeSingle();
 
     if (error || !raffleData) {
       console.error("Error fetching raffle:", error);
