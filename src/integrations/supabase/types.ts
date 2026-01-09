@@ -41,6 +41,13 @@ export type Database = {
             foreignKeyName: "entries_raffle_id_fkey"
             columns: ["raffle_id"]
             isOneToOne: false
+            referencedRelation: "public_raffles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entries_raffle_id_fkey"
+            columns: ["raffle_id"]
+            isOneToOne: false
             referencedRelation: "raffles"
             referencedColumns: ["id"]
           },
@@ -210,6 +217,54 @@ export type Database = {
       }
     }
     Views: {
+      public_raffles: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          draw_hash: string | null
+          end_at: string | null
+          id: string | null
+          image_url: string | null
+          min_entries: number | null
+          seed: string | null
+          seed_hash: string | null
+          status: Database["public"]["Enums"]["raffle_status"] | null
+          title: string | null
+          updated_at: string | null
+          winner_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          draw_hash?: never
+          end_at?: string | null
+          id?: string | null
+          image_url?: string | null
+          min_entries?: number | null
+          seed?: never
+          seed_hash?: string | null
+          status?: Database["public"]["Enums"]["raffle_status"] | null
+          title?: string | null
+          updated_at?: string | null
+          winner_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          draw_hash?: never
+          end_at?: string | null
+          id?: string | null
+          image_url?: string | null
+          min_entries?: number | null
+          seed?: never
+          seed_hash?: string | null
+          status?: Database["public"]["Enums"]["raffle_status"] | null
+          title?: string | null
+          updated_at?: string | null
+          winner_id?: string | null
+        }
+        Relationships: []
+      }
       winner_display: {
         Row: {
           display_name: string | null
