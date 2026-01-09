@@ -14,6 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Pricing from "./pages/Pricing";
 import Raffles from "./pages/Raffles";
 import RaffleDetail from "./pages/RaffleDetail";
+import HowItWorks from "./pages/HowItWorks";
 import Account from "./pages/Account";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
@@ -42,6 +43,7 @@ const App = () => (
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/raffles" element={<Raffles />} />
                 <Route path="/raffles/:id" element={<RaffleDetail />} />
+                <Route path="/how-it-works" element={<HowItWorks />} />
                 <Route path="/account" element={
                   <ProtectedRoute>
                     <Account />
