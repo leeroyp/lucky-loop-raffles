@@ -291,6 +291,13 @@ export type Database = {
         Args: { referral_code_input: string }
         Returns: boolean
       }
+      submit_raffle_entry: {
+        Args: {
+          entry_type: Database["public"]["Enums"]["entry_source"]
+          raffle_uuid: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "USER" | "ADMIN"
