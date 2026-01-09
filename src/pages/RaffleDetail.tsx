@@ -556,7 +556,6 @@ export default function RaffleDetail() {
                         autoPlay={true}
                         onComplete={() => {}}
                         totalEntries={entryCount}
-                        seed={raffle.seed}
                         seedHash={raffle.seed_hash}
                         drawHash={raffle.draw_hash || undefined}
                       />
@@ -617,7 +616,7 @@ export default function RaffleDetail() {
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Revealed Seed</p>
                   <code className="block p-3 rounded-lg bg-muted text-xs break-all font-mono">
-                    {raffle.seed}
+                    {(raffle as any).seed || "Seed revealed after draw completion"}
                   </code>
                 </div>
 
