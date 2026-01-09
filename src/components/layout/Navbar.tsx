@@ -10,7 +10,8 @@ import {
   Shield, 
   Menu, 
   X,
-  Sparkles 
+  Sparkles,
+  HelpCircle
 } from "lucide-react";
 import { useState } from "react";
 
@@ -23,6 +24,7 @@ export function Navbar() {
     { href: "/", label: "Home", icon: Sparkles },
     { href: "/raffles", label: "Raffles", icon: Ticket },
     { href: "/pricing", label: "Pricing", icon: Crown },
+    { href: "/how-it-works", label: "How It Works", icon: HelpCircle },
   ];
 
   const isActive = (path: string) => location.pathname === path;
