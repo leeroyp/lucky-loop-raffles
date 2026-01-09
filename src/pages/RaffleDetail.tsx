@@ -500,6 +500,10 @@ export default function RaffleDetail() {
                         winnerName={winner.full_name || winner.email.split("@")[0]}
                         autoPlay={true}
                         onComplete={() => {}}
+                        totalEntries={entryCount}
+                        seed={raffle.seed}
+                        seedHash={raffle.seed_hash}
+                        drawHash={raffle.draw_hash || undefined}
                       />
                     </motion.div>
                   )}
