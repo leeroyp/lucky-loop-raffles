@@ -386,19 +386,37 @@ export default function RaffleDetail() {
                 <div className="space-y-3">
                   {user ? (
                     <>
-                      <Button
-                        className="w-full gap-2"
-                        size="lg"
-                        onClick={handleEnterRaffle}
-                        disabled={isEntering || (profile?.entries_remaining || 0) <= 0}
-                      >
-                        {isEntering ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
+                      {(profile?.entries_remaining || 0) > 0 ? (
+                        <Button
+                          className="w-full gap-2"
+                          size="lg"
+                          onClick={handleEnterRaffle}
+                          disabled={isEntering}
+                        >
+                          {isEntering ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Ticket className="w-5 h-5" />
+                          )}
+                          Enter Raffle ({profile?.entries_remaining || 0} entries left)
+                        </Button>
+                      ) : !profile?.subscription_tier ? (
+                        <Link to="/pricing" className="block">
+                          <Button className="w-full gap-2" size="lg" variant="gold">
+                            <Sparkles className="w-5 h-5" />
+                            Subscribe for More Entries
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Button
+                          className="w-full gap-2"
+                          size="lg"
+                          disabled
+                        >
                           <Ticket className="w-5 h-5" />
-                        )}
-                        Enter Raffle ({profile?.entries_remaining || 0} entries left)
-                      </Button>
+                          No Entries Remaining
+                        </Button>
+                      )}
 
                       {!hasNpnEntry && (
                         <Button
