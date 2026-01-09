@@ -193,9 +193,23 @@ export default function ManageRaffle() {
 
       if (error) throw error;
 
+      // Send winner notification email
+      try {
+        await supabase.functions.invoke("send-notification", {
+          body: {
+            type: "winner",
+            userId: winnerEntry.user_id,
+            raffleId: raffle.id,
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send winner notification:", emailError);
+        // Don't fail the draw if email fails
+      }
+
       toast({
         title: "Winner drawn!",
-        description: "The raffle has been closed and winner selected.",
+        description: "The raffle has been closed and winner notified.",
       });
 
       fetchRaffleData();
