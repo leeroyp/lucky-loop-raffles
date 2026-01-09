@@ -35,7 +35,7 @@ const tiers: {
   {
     name: "Bronze",
     key: "BRONZE",
-    price: 5,
+    price: 2.99,
     entries: 3,
     colorClass: "text-amber-700",
     gradientClass: "bg-gradient-to-r from-amber-700 to-orange-600",
@@ -50,7 +50,7 @@ const tiers: {
   {
     name: "Silver",
     key: "SILVER",
-    price: 10,
+    price: 5.99,
     entries: 5,
     colorClass: "text-slate-500",
     gradientClass: "bg-gradient-to-r from-slate-400 to-gray-500",
@@ -66,7 +66,7 @@ const tiers: {
   {
     name: "Gold",
     key: "GOLD",
-    price: 20,
+    price: 9.99,
     entries: 10,
     colorClass: "text-yellow-600",
     gradientClass: "bg-gradient-to-r from-yellow-500 to-amber-400",

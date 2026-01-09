@@ -8,9 +8,9 @@ const corsHeaders = {
 };
 
 const PRODUCT_TO_TIER: Record<string, string> = {
-  "prod_TlIZXVl3f4N9cV": "BRONZE",
-  "prod_TlIfLn8nuE2pwc": "SILVER",
-  "prod_TlIfEGrr7Mq3py": "GOLD",
+  "prod_TlIm8wLmtGw9Pf": "BRONZE",
+  "prod_TlImJK0YPV7Txr": "SILVER",
+  "prod_TlImcNefZJl8o2": "GOLD",
 };
 
 const TIER_ENTRIES: Record<string, number> = {

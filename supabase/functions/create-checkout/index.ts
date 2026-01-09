@@ -8,9 +8,9 @@ const corsHeaders = {
 };
 
 const TIER_PRICES = {
-  BRONZE: "price_1SnlyZAKQX8iPmGes8hen1al",
-  SILVER: "price_1Snm46AKQX8iPmGe8LCdeswV",
-  GOLD: "price_1Snm4IAKQX8iPmGetBOj2t7r",
+  BRONZE: "price_1SnmAgAKQX8iPmGeMAlZYrd9",
+  SILVER: "price_1SnmAuAKQX8iPmGeC7Er2RoZ",
+  GOLD: "price_1SnmB5AKQX8iPmGeNV1UKItC",
 };
 
 serve(async (req) => {
