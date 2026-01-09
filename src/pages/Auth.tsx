@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { SEO } from "@/components/SEO";
-import { Ticket, Mail, Lock, User, Loader2, ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Ticket, Mail, Lock, User, Loader2, ArrowLeft, Gift } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -24,15 +25,33 @@ export default function Auth() {
   const [mode, setMode] = useState<"login" | "signup">(
     searchParams.get("mode") === "signup" ? "signup" : "login"
   );
+  const referralCode = searchParams.get("ref");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [referrerName, setReferrerName] = useState<string | null>(null);
 
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Check if referral code is valid and get referrer name
+  useEffect(() => {
+    if (referralCode && mode === "signup") {
+      supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("referral_code", referralCode)
+        .maybeSingle()
+        .then(({ data }) => {
+          if (data?.full_name) {
+            setReferrerName(data.full_name);
+          }
+        });
+    }
+  }, [referralCode, mode]);
 
   useEffect(() => {
     if (user) {
@@ -94,6 +113,24 @@ export default function Auth() {
           }
           return;
         }
+        
+        // Process referral if there's a referral code
+        if (referralCode) {
+          try {
+            const { error: refError } = await supabase.rpc("process_referral", {
+              referral_code_input: referralCode,
+            });
+            if (!refError) {
+              toast({
+                title: "Referral bonus applied!",
+                description: "Your friend earned 2 bonus entries thanks to you.",
+              });
+            }
+          } catch (e) {
+            console.error("Referral processing error:", e);
+          }
+        }
+        
         toast({
           title: "Account created!",
           description: "Welcome to LuckyLoop. Start exploring raffles!",
@@ -141,16 +178,28 @@ export default function Auth() {
               <Ticket className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">
+            <h1 className="text-2xl font-bold text-foreground">
                 {mode === "login" ? "Welcome back" : "Create account"}
               </h1>
               <p className="text-muted-foreground">
                 {mode === "login" 
                   ? "Enter your credentials to continue" 
-                  : "Start your lucky journey today"}
+                  : referrerName 
+                    ? `Join via ${referrerName}'s invite`
+                    : "Start your lucky journey today"}
               </p>
             </div>
           </div>
+
+          {referralCode && mode === "signup" && (
+            <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 flex items-center gap-3 mb-4">
+              <Gift className="w-5 h-5 text-primary shrink-0" />
+              <p className="text-sm">
+                <span className="font-medium">Referral bonus!</span>{" "}
+                Your friend will earn 2 entries when you sign up.
+              </p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === "signup" && (
