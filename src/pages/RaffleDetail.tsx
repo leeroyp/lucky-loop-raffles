@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { CountdownTimer } from "@/components/CountdownTimer";
+import { DrawAnimation } from "@/components/DrawAnimation";
 import {
   Ticket,
   Clock,
@@ -19,7 +20,8 @@ import {
   Shield,
   AlertCircle,
   Gift,
-  Sparkles
+  Sparkles,
+  Play
 } from "lucide-react";
 import { format, isPast } from "date-fns";
 
@@ -53,6 +55,8 @@ export default function RaffleDetail() {
   const [winner, setWinner] = useState<WinnerProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEntering, setIsEntering] = useState(false);
+  const [showDrawAnimation, setShowDrawAnimation] = useState(false);
+  const [entryNames, setEntryNames] = useState<string[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -467,30 +471,65 @@ export default function RaffleDetail() {
 
               {/* Winner Section (if closed) */}
               {isClosed && winner && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="p-6 rounded-2xl bg-accent/10 border border-accent/30 shadow-md"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-accent to-primary flex items-center justify-center">
-                      <Trophy className="w-6 h-6 text-accent-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-accent font-medium">Winner</p>
-                      <p className="text-xl font-bold text-foreground">
-                        {winner.full_name || winner.email.split("@")[0]}
-                      </p>
-                    </div>
-                  </div>
-
-                  {raffle.winner_id === user?.id && (
-                    <div className="flex items-center gap-2 text-accent text-sm">
-                      <Sparkles className="w-4 h-4" />
-                      <span>Congratulations, you won!</span>
-                    </div>
+                <div className="space-y-4">
+                  {/* Watch Draw Button */}
+                  {!showDrawAnimation && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full gap-2"
+                        onClick={() => setShowDrawAnimation(true)}
+                      >
+                        <Play className="w-4 h-4" />
+                        Watch the Draw Animation
+                      </Button>
+                    </motion.div>
                   )}
-                </motion.div>
+
+                  {/* Draw Animation */}
+                  {showDrawAnimation && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                    >
+                      <DrawAnimation
+                        entries={entryNames}
+                        winnerName={winner.full_name || winner.email.split("@")[0]}
+                        autoPlay={true}
+                        onComplete={() => {}}
+                      />
+                    </motion.div>
+                  )}
+
+                  {/* Winner Card */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="p-6 rounded-2xl bg-accent/10 border border-accent/30 shadow-md"
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-accent to-primary flex items-center justify-center">
+                        <Trophy className="w-6 h-6 text-accent-foreground" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-accent font-medium">Winner</p>
+                        <p className="text-xl font-bold text-foreground">
+                          {winner.full_name || winner.email.split("@")[0]}
+                        </p>
+                      </div>
+                    </div>
+
+                    {raffle.winner_id === user?.id && (
+                      <div className="flex items-center gap-2 text-accent text-sm">
+                        <Sparkles className="w-4 h-4" />
+                        <span>Congratulations, you won!</span>
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
               )}
             </motion.div>
           </div>
