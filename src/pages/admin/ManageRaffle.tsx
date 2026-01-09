@@ -42,6 +42,7 @@ interface Raffle {
   seed_hash: string;
   draw_hash: string | null;
   winner_id: string | null;
+  min_entries: number | null;
 }
 
 interface Entry {
@@ -168,6 +169,39 @@ export default function ManageRaffle() {
 
   const handleDrawWinner = async () => {
     if (!raffle || entries.length === 0) return;
+
+    // Check if minimum entries requirement is met
+    if (raffle.min_entries && entries.length < raffle.min_entries) {
+      // Extend by 1 day
+      setActionLoading(true);
+      try {
+        const newEndAt = new Date(raffle.end_at);
+        newEndAt.setDate(newEndAt.getDate() + 1);
+
+        const { error } = await supabase
+          .from("raffles")
+          .update({ end_at: newEndAt.toISOString() })
+          .eq("id", raffle.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Draw extended",
+          description: `Minimum ${raffle.min_entries} entries not met (${entries.length} current). Extended by 1 day.`,
+        });
+
+        fetchRaffleData();
+      } catch (error: any) {
+        toast({
+          title: "Error extending raffle",
+          description: error.message,
+          variant: "destructive",
+        });
+      } finally {
+        setActionLoading(false);
+      }
+      return;
+    }
 
     setActionLoading(true);
     try {
@@ -376,13 +410,18 @@ export default function ManageRaffle() {
             </div>
 
             {/* Stats */}
-            <div className="grid sm:grid-cols-3 gap-4 mb-8">
+            <div className="grid sm:grid-cols-4 gap-4 mb-8">
               <div className="p-4 rounded-xl bg-gradient-card border border-border/50">
                 <div className="flex items-center gap-2 text-muted-foreground mb-1">
                   <Users className="w-4 h-4" />
                   <span className="text-sm">Total Entries</span>
                 </div>
                 <p className="text-2xl font-bold">{entries.length}</p>
+                {raffle.min_entries && (
+                  <p className={`text-xs mt-1 ${entries.length >= raffle.min_entries ? 'text-success' : 'text-destructive'}`}>
+                    Min: {raffle.min_entries} {entries.length >= raffle.min_entries ? '✓' : `(${raffle.min_entries - entries.length} more needed)`}
+                  </p>
+                )}
               </div>
               <div className="p-4 rounded-xl bg-gradient-card border border-border/50">
                 <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -401,6 +440,13 @@ export default function ManageRaffle() {
                 <p className="text-2xl font-bold">
                   {entries.filter((e) => e.source === "NPN").length}
                 </p>
+              </div>
+              <div className="p-4 rounded-xl bg-gradient-card border border-border/50">
+                <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                  <Clock className="w-4 h-4" />
+                  <span className="text-sm">Minimum Required</span>
+                </div>
+                <p className="text-2xl font-bold">{raffle.min_entries ?? "None"}</p>
               </div>
             </div>
 
