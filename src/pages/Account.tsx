@@ -1,4 +1,5 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,8 @@ import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { EntryHistory } from "@/components/EntryHistory";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { 
   User, 
   Ticket, 
@@ -14,7 +17,10 @@ import {
   ArrowRight,
   LogOut,
   Shield,
-  History
+  History,
+  CreditCard,
+  Loader2,
+  CheckCircle
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -31,8 +37,23 @@ const tierGradients = {
 };
 
 export default function Account() {
-  const { user, profile, isAdmin, isLoading, signOut } = useAuth();
+  const { user, profile, isAdmin, isLoading, signOut, refreshProfile } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  // Handle successful checkout
+  useEffect(() => {
+    if (searchParams.get("checkout") === "success") {
+      toast({
+        title: "Subscription activated!",
+        description: "Welcome to your new plan. Your entries have been updated.",
+      });
+      // Refresh profile to get updated subscription info
+      refreshProfile?.();
+    }
+  }, [searchParams, toast, refreshProfile]);
 
   if (isLoading || !profile) {
     return (
@@ -127,8 +148,57 @@ export default function Account() {
               </div>
             </div>
 
-            {/* Upgrade CTA */}
-            {!profile.subscription_tier && (
+            {/* Manage Subscription or Upgrade CTA */}
+            {profile.subscription_tier ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="p-6 rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 mb-8"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-1">Active Subscription</h3>
+                      <p className="text-muted-foreground">
+                        Manage billing, upgrade, or cancel anytime
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="gap-2"
+                    disabled={portalLoading}
+                    onClick={async () => {
+                      setPortalLoading(true);
+                      try {
+                        const { data, error } = await supabase.functions.invoke("customer-portal");
+                        if (error) throw error;
+                        if (data?.url) {
+                          window.open(data.url, "_blank");
+                        }
+                      } catch (error: any) {
+                        toast({
+                          title: "Error",
+                          description: error.message || "Failed to open billing portal",
+                          variant: "destructive",
+                        });
+                      } finally {
+                        setPortalLoading(false);
+                      }
+                    }}
+                  >
+                    {portalLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <CreditCard className="w-4 h-4" />
+                    )}
+                    Manage Subscription
+                  </Button>
+                </div>
+              </motion.div>
+            ) : (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
