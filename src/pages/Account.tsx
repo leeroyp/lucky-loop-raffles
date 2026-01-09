@@ -7,6 +7,7 @@ import { SEO } from "@/components/SEO";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { EntryHistory } from "@/components/EntryHistory";
+import { ReferralCard } from "@/components/ReferralCard";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -221,6 +222,11 @@ export default function Account() {
                 </div>
               </motion.div>
             )}
+
+            {/* Referral Program */}
+            <div className="mb-8">
+              <ReferralCard />
+            </div>
 
             {/* Account Info */}
             <div className="p-6 rounded-2xl bg-card border border-border/50 mb-8">

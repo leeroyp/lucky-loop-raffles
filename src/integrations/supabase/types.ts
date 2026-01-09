@@ -75,6 +75,7 @@ export type Database = {
           entries_remaining: number
           full_name: string | null
           id: string
+          referral_code: string | null
           stripe_customer_id: string | null
           subscription_tier:
             | Database["public"]["Enums"]["subscription_tier"]
@@ -88,6 +89,7 @@ export type Database = {
           entries_remaining?: number
           full_name?: string | null
           id: string
+          referral_code?: string | null
           stripe_customer_id?: string | null
           subscription_tier?:
             | Database["public"]["Enums"]["subscription_tier"]
@@ -101,6 +103,7 @@ export type Database = {
           entries_remaining?: number
           full_name?: string | null
           id?: string
+          referral_code?: string | null
           stripe_customer_id?: string | null
           subscription_tier?:
             | Database["public"]["Enums"]["subscription_tier"]
@@ -157,6 +160,33 @@ export type Database = {
         }
         Relationships: []
       }
+      referrals: {
+        Row: {
+          created_at: string
+          credited_at: string | null
+          entries_credited: boolean
+          id: string
+          referred_user_id: string
+          referrer_id: string
+        }
+        Insert: {
+          created_at?: string
+          credited_at?: string | null
+          entries_credited?: boolean
+          id?: string
+          referred_user_id: string
+          referrer_id: string
+        }
+        Update: {
+          created_at?: string
+          credited_at?: string | null
+          entries_credited?: boolean
+          id?: string
+          referred_user_id?: string
+          referrer_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -189,6 +219,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      process_referral: {
+        Args: { referral_code_input: string }
         Returns: boolean
       }
     }
