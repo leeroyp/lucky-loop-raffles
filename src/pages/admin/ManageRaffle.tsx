@@ -53,13 +53,7 @@ interface Entry {
   user_email?: string;
 }
 
-// Simple hash function
-async function sha256(message: string): Promise<string> {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-}
+// SHA256 function removed - winner selection now handled server-side
 
 export default function ManageRaffle() {
   const { id } = useParams<{ id: string }>();
@@ -170,80 +164,32 @@ export default function ManageRaffle() {
   const handleDrawWinner = async () => {
     if (!raffle || entries.length === 0) return;
 
-    // Check if minimum entries requirement is met
-    if (raffle.min_entries && entries.length < raffle.min_entries) {
-      // Extend by 1 day
-      setActionLoading(true);
-      try {
-        const newEndAt = new Date(raffle.end_at);
-        newEndAt.setDate(newEndAt.getDate() + 1);
-
-        const { error } = await supabase
-          .from("raffles")
-          .update({ end_at: newEndAt.toISOString() })
-          .eq("id", raffle.id);
-
-        if (error) throw error;
-
-        toast({
-          title: "Draw extended",
-          description: `Minimum ${raffle.min_entries} entries not met (${entries.length} current). Extended by 1 day.`,
-        });
-
-        fetchRaffleData();
-      } catch (error: any) {
-        toast({
-          title: "Error extending raffle",
-          description: error.message,
-          variant: "destructive",
-        });
-      } finally {
-        setActionLoading(false);
-      }
-      return;
-    }
-
     setActionLoading(true);
     try {
-      // Generate draw hash
-      const timestamp = Date.now().toString();
-      const drawInput = `${raffle.seed}:${entries.length}:${timestamp}`;
-      const drawHash = await sha256(drawInput);
-
-      // Convert hash to number and select winner
-      const hashInt = BigInt("0x" + drawHash.slice(0, 16));
-      const winnerIndex = Number(hashInt % BigInt(entries.length));
-      const winnerEntry = entries[winnerIndex];
-
-      // Update raffle
-      const { error } = await supabase
-        .from("raffles")
-        .update({
-          status: "CLOSED",
-          draw_hash: drawHash,
-          winner_id: winnerEntry.user_id,
-        })
-        .eq("id", raffle.id);
+      // Call secure server-side edge function for winner selection
+      const { data, error } = await supabase.functions.invoke("draw-winner", {
+        body: { raffleId: raffle.id },
+      });
 
       if (error) throw error;
 
-      // Send winner notification email
-      try {
-        await supabase.functions.invoke("send-notification", {
-          body: {
-            type: "winner",
-            userId: winnerEntry.user_id,
-            raffleId: raffle.id,
-          },
+      if (data.extended) {
+        // Minimum entries not met, raffle extended
+        toast({
+          title: "Draw extended",
+          description: data.message,
         });
-      } catch (emailError) {
-        console.error("Failed to send winner notification:", emailError);
-        // Don't fail the draw if email fails
+        fetchRaffleData();
+        return;
+      }
+
+      if (!data.success) {
+        throw new Error(data.error || "Draw failed");
       }
 
       toast({
         title: "Winner drawn!",
-        description: "The raffle has been closed and winner notified.",
+        description: `${data.winnerName || data.winnerEmail} has been selected as the winner.`,
       });
 
       fetchRaffleData();

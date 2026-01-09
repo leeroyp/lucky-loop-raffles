@@ -1,1 +1,4 @@
 project_id = "vkzatdoesnrkxbvdadcc"
+
+[functions.draw-winner]
+verify_jwt = false
