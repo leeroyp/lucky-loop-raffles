@@ -10,13 +10,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Loader2, Ticket, Calendar } from "lucide-react";
+import { ArrowLeft, Loader2, Ticket, Calendar, Users } from "lucide-react";
 
 const raffleSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100),
   description: z.string().max(500).optional(),
   imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   endAt: z.string().min(1, "End date is required"),
+  minEntries: z.number().int().min(1).optional(),
 });
 
 // Simple hash function for browser
@@ -42,6 +43,7 @@ export default function CreateRaffle() {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [endAt, setEndAt] = useState("");
+  const [minEntries, setMinEntries] = useState<string>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,6 +58,7 @@ export default function CreateRaffle() {
         description: description || undefined,
         imageUrl: imageUrl || undefined,
         endAt,
+        minEntries: minEntries ? parseInt(minEntries, 10) : undefined,
       };
 
       raffleSchema.parse(data);
@@ -74,6 +77,7 @@ export default function CreateRaffle() {
           seed,
           seed_hash: seedHash,
           status: "DRAFT",
+          min_entries: minEntries ? parseInt(minEntries, 10) : null,
         })
         .select()
         .single();
@@ -187,6 +191,28 @@ export default function CreateRaffle() {
                 />
                 {errors.endAt && (
                   <p className="text-sm text-destructive">{errors.endAt}</p>
+                )}
+              </div>
+
+              {/* Minimum Entries */}
+              <div className="space-y-2">
+                <Label htmlFor="minEntries" className="flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  Minimum Entries (optional)
+                </Label>
+                <Input
+                  id="minEntries"
+                  type="number"
+                  min="1"
+                  placeholder="e.g., 10"
+                  value={minEntries}
+                  onChange={(e) => setMinEntries(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  If set, the draw will be extended by 1 day until this minimum is reached.
+                </p>
+                {errors.minEntries && (
+                  <p className="text-sm text-destructive">{errors.minEntries}</p>
                 )}
               </div>
 
