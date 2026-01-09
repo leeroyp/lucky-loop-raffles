@@ -215,14 +215,6 @@ export type Database = {
           display_name: string | null
           id: string | null
         }
-        Insert: {
-          display_name?: never
-          id?: string | null
-        }
-        Update: {
-          display_name?: never
-          id?: string | null
-        }
         Relationships: []
       }
     }
