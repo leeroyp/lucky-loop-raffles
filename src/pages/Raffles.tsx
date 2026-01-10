@@ -17,7 +17,11 @@ import {
   Sparkles,
   Calendar,
   LogIn,
-  UserPlus
+  UserPlus,
+  Gift,
+  Zap,
+  Star,
+  Crown
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -43,8 +47,13 @@ export default function Raffles() {
   const [filter, setFilter] = useState<"all" | "LIVE" | "CLOSED">("all");
 
   useEffect(() => {
-    fetchRaffles();
-  }, []);
+    // Only fetch raffles if user is authenticated
+    if (user) {
+      fetchRaffles();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const fetchRaffles = async () => {
     // Use public_raffles view which hides seeds until draw is complete
@@ -111,174 +120,262 @@ export default function Raffles() {
             </p>
           </motion.div>
 
-          {/* Sign In/Sign Up CTA for unauthenticated users */}
+          {/* Unauthenticated User View */}
           {!user && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 }}
-              className="mb-12"
-            >
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 p-6 md:p-8">
-                <div className="absolute inset-0 bg-grid-white/5" />
-                <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="text-center md:text-left">
-                    <h3 className="text-xl md:text-2xl font-bold mb-2">
-                      Ready to Enter? <span className="text-primary">Join Now!</span>
-                    </h3>
-                    <p className="text-muted-foreground max-w-md">
-                      Sign up or log in to enter live raffles and get a chance to win amazing prizes.
+            <>
+              {/* Main CTA Banner */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className="mb-16"
+              >
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/20 via-accent/10 to-primary/5 border border-primary/20 p-8 md:p-12">
+                  <div className="absolute inset-0 bg-grid-white/5" />
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/10 rounded-full blur-3xl" />
+                  
+                  <div className="relative text-center max-w-2xl mx-auto">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary mb-6">
+                      <Zap className="w-4 h-4" />
+                      <span className="text-sm font-semibold">Exclusive Access</span>
+                    </div>
+                    
+                    <h2 className="text-3xl md:text-4xl font-black mb-4">
+                      Ready to Win <span className="text-primary">Amazing Prizes?</span>
+                    </h2>
+                    <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
+                      Sign up or log in to browse all active raffles and enter for a chance to win. It only takes a minute!
                     </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button asChild size="lg" variant="outline" className="gap-2">
-                      <Link to="/auth?tab=login">
-                        <LogIn className="w-4 h-4" />
-                        Sign In
-                      </Link>
-                    </Button>
-                    <Button asChild size="lg" className="gap-2">
-                      <Link to="/auth?tab=signup">
-                        <UserPlus className="w-4 h-4" />
-                        Create Account
-                      </Link>
-                    </Button>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button asChild size="lg" className="gap-2 text-lg px-8">
+                        <Link to="/auth?tab=signup">
+                          <UserPlus className="w-5 h-5" />
+                          Create Free Account
+                        </Link>
+                      </Button>
+                      <Button asChild size="lg" variant="outline" className="gap-2 text-lg px-8">
+                        <Link to="/auth?tab=login">
+                          <LogIn className="w-5 h-5" />
+                          Sign In
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+
+              {/* Sample Prizes Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="mb-12"
+              >
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                    What You Could <span className="text-primary">Win</span>
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Check out the types of prizes available to our members
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                  {[
+                    {
+                      icon: Gift,
+                      title: "Gift Cards",
+                      description: "Amazon, Apple, and more popular retailers",
+                      gradient: "from-pink-500/20 to-rose-500/20"
+                    },
+                    {
+                      icon: Crown,
+                      title: "Premium Subscriptions",
+                      description: "Streaming services, software, and memberships",
+                      gradient: "from-amber-500/20 to-yellow-500/20"
+                    },
+                    {
+                      icon: Star,
+                      title: "Exclusive Merchandise",
+                      description: "Limited edition items and collectibles",
+                      gradient: "from-blue-500/20 to-cyan-500/20"
+                    }
+                  ].map((prize, index) => (
+                    <motion.div
+                      key={prize.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 + index * 0.1 }}
+                      className="group"
+                    >
+                      <div className={`rounded-2xl bg-gradient-to-br ${prize.gradient} border border-border p-6 text-center hover:border-primary/30 transition-all duration-300`}>
+                        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-background/80 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <prize.icon className="w-8 h-8 text-primary" />
+                        </div>
+                        <h4 className="text-lg font-bold mb-2">{prize.title}</h4>
+                        <p className="text-sm text-muted-foreground">{prize.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Features */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="grid md:grid-cols-3 gap-6 text-center"
+              >
+                {[
+                  { icon: Ticket, label: "Free Entries Available" },
+                  { icon: Trophy, label: "Provably Fair Draws" },
+                  { icon: Users, label: "Growing Community" }
+                ].map((feature) => (
+                  <div key={feature.label} className="flex flex-col items-center gap-2 p-4">
+                    <feature.icon className="w-6 h-6 text-primary" />
+                    <span className="text-sm font-medium text-muted-foreground">{feature.label}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </>
           )}
 
-          {/* Filters - only show for authenticated users */}
+          {/* Authenticated User View */}
           {user && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex flex-wrap items-center justify-center gap-2 mb-12"
-            >
-              <Button
-                variant={filter === "all" ? "default" : "outline"}
-                onClick={() => setFilter("all")}
-                className="gap-2"
+            <>
+              {/* Filters */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="flex flex-wrap items-center justify-center gap-2 mb-12"
               >
-                <Ticket className="w-4 h-4" />
-                All ({raffles.length})
-              </Button>
-              <Button
-                variant={filter === "LIVE" ? "default" : "outline"}
-                onClick={() => setFilter("LIVE")}
-                className="gap-2"
-              >
-                <Clock className="w-4 h-4" />
-                Live ({liveCount})
-              </Button>
-              <Button
-                variant={filter === "CLOSED" ? "default" : "outline"}
-                onClick={() => setFilter("CLOSED")}
-                className="gap-2"
-              >
-                <Trophy className="w-4 h-4" />
-                Closed ({closedCount})
-              </Button>
-            </motion.div>
-          )}
-
-          {/* Raffles Grid */}
-          {isLoading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <RaffleCardSkeleton key={i} />
-              ))}
-            </div>
-          ) : filteredRaffles.length === 0 ? (
-            <EmptyState
-              icon={Ticket}
-              title="No raffles found"
-              description={filter === "all" 
-                ? "Check back soon for new raffles!" 
-                : `No ${filter.toLowerCase()} raffles at the moment.`}
-            />
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredRaffles.map((raffle, index) => (
-                <motion.div
-                  key={raffle.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                <Button
+                  variant={filter === "all" ? "default" : "outline"}
+                  onClick={() => setFilter("all")}
+                  className="gap-2"
                 >
-                  <Link to={`/raffles/${raffle.id}`}>
-                    <div className="group rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-lg overflow-hidden transition-all duration-300">
-                      {/* Image */}
-                      <div className="relative aspect-video bg-muted overflow-hidden">
-                        {raffle.image_url ? (
-                          <img
-                            src={raffle.image_url}
-                            alt={raffle.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-                            <Ticket className="w-12 h-12 text-primary/30" />
-                          </div>
-                        )}
-                        
-                        {/* Status Badge */}
-                        <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${
-                          raffle.status === "LIVE"
-                            ? "bg-green-500 text-white"
-                            : "bg-muted text-muted-foreground"
-                        }`}>
-                          {raffle.status === "LIVE" ? "LIVE" : "CLOSED"}
-                        </div>
-                      </div>
+                  <Ticket className="w-4 h-4" />
+                  All ({raffles.length})
+                </Button>
+                <Button
+                  variant={filter === "LIVE" ? "default" : "outline"}
+                  onClick={() => setFilter("LIVE")}
+                  className="gap-2"
+                >
+                  <Clock className="w-4 h-4" />
+                  Live ({liveCount})
+                </Button>
+                <Button
+                  variant={filter === "CLOSED" ? "default" : "outline"}
+                  onClick={() => setFilter("CLOSED")}
+                  className="gap-2"
+                >
+                  <Trophy className="w-4 h-4" />
+                  Closed ({closedCount})
+                </Button>
+              </motion.div>
 
-                      {/* Content */}
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                          {raffle.title}
-                        </h3>
-                        {raffle.description && (
-                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                            {raffle.description}
-                          </p>
-                        )}
-
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Users className="w-4 h-4" />
-                            <span>{raffle.entry_count} entries</span>
-                          </div>
-                          {raffle.status === "LIVE" ? (
-                            <CountdownTimer 
-                              endDate={new Date(raffle.end_at)} 
-                              className="text-muted-foreground"
-                            />
-                          ) : (
-                            <div className="flex items-center gap-2 text-muted-foreground">
-                              <Calendar className="w-4 h-4" />
-                              <span>
-                                Ended {format(new Date(raffle.end_at), "MMM d")}
-                              </span>
+              {/* Raffles Grid */}
+              {isLoading ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[...Array(6)].map((_, i) => (
+                    <RaffleCardSkeleton key={i} />
+                  ))}
+                </div>
+              ) : filteredRaffles.length === 0 ? (
+                <EmptyState
+                  icon={Ticket}
+                  title="No raffles found"
+                  description={filter === "all" 
+                    ? "Check back soon for new raffles!" 
+                    : `No ${filter.toLowerCase()} raffles at the moment.`}
+                />
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredRaffles.map((raffle, index) => (
+                    <motion.div
+                      key={raffle.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Link to={`/raffles/${raffle.id}`}>
+                        <div className="group rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-lg overflow-hidden transition-all duration-300">
+                          {/* Image */}
+                          <div className="relative aspect-video bg-muted overflow-hidden">
+                            {raffle.image_url ? (
+                              <img
+                                src={raffle.image_url}
+                                alt={raffle.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                                <Ticket className="w-12 h-12 text-primary/30" />
+                              </div>
+                            )}
+                            
+                            {/* Status Badge */}
+                            <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${
+                              raffle.status === "LIVE"
+                                ? "bg-green-500 text-white"
+                                : "bg-muted text-muted-foreground"
+                            }`}>
+                              {raffle.status === "LIVE" ? "LIVE" : "CLOSED"}
                             </div>
-                          )}
-                        </div>
-
-                        {raffle.status === "CLOSED" && raffle.winner_id && (
-                          <div className="mt-4 pt-4 border-t border-border">
-                            <div className="flex items-center gap-2 text-yellow-600">
-                              <Trophy className="w-4 h-4" />
-                              <span className="text-sm font-medium">Winner Selected</span>
-                            </div>
                           </div>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+
+                          {/* Content */}
+                          <div className="p-6">
+                            <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                              {raffle.title}
+                            </h3>
+                            {raffle.description && (
+                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                                {raffle.description}
+                              </p>
+                            )}
+
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Users className="w-4 h-4" />
+                                <span>{raffle.entry_count} entries</span>
+                              </div>
+                              {raffle.status === "LIVE" ? (
+                                <CountdownTimer 
+                                  endDate={new Date(raffle.end_at)} 
+                                  className="text-muted-foreground"
+                                />
+                              ) : (
+                                <div className="flex items-center gap-2 text-muted-foreground">
+                                  <Calendar className="w-4 h-4" />
+                                  <span>
+                                    Ended {format(new Date(raffle.end_at), "MMM d")}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+
+                            {raffle.status === "CLOSED" && raffle.winner_id && (
+                              <div className="mt-4 pt-4 border-t border-border">
+                                <div className="flex items-center gap-2 text-yellow-600">
+                                  <Trophy className="w-4 h-4" />
+                                  <span className="text-sm font-medium">Winner Selected</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
