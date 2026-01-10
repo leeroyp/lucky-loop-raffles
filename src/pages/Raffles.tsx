@@ -8,13 +8,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { RaffleCardSkeleton } from "@/components/ui/skeleton-card";
 import { EmptyState } from "@/components/EmptyState";
+import { useAuth } from "@/lib/auth";
 import { 
   Ticket, 
   Clock, 
   Users, 
   Trophy,
   Sparkles,
-  Calendar
+  Calendar,
+  LogIn,
+  UserPlus
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -34,6 +37,7 @@ interface RaffleWithEntries extends Raffle {
 }
 
 export default function Raffles() {
+  const { user } = useAuth();
   const [raffles, setRaffles] = useState<RaffleWithEntries[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "LIVE" | "CLOSED">("all");
@@ -106,6 +110,44 @@ export default function Raffles() {
               Enter for a chance to win amazing prizes. All draws are provably fair.
             </p>
           </motion.div>
+
+          {/* Sign In/Sign Up CTA for unauthenticated users */}
+          {!user && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="mb-12"
+            >
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border border-primary/20 p-6 md:p-8">
+                <div className="absolute inset-0 bg-grid-white/5" />
+                <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="text-center md:text-left">
+                    <h3 className="text-xl md:text-2xl font-bold mb-2">
+                      Ready to Enter? <span className="text-primary">Join Now!</span>
+                    </h3>
+                    <p className="text-muted-foreground max-w-md">
+                      Sign up or log in to enter live raffles and get a chance to win amazing prizes.
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button asChild size="lg" variant="outline" className="gap-2">
+                      <Link to="/auth?tab=login">
+                        <LogIn className="w-4 h-4" />
+                        Sign In
+                      </Link>
+                    </Button>
+                    <Button asChild size="lg" className="gap-2">
+                      <Link to="/auth?tab=signup">
+                        <UserPlus className="w-4 h-4" />
+                        Create Account
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Filters */}
           <motion.div
