@@ -149,38 +149,40 @@ export default function Raffles() {
             </motion.div>
           )}
 
-          {/* Filters */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="flex flex-wrap items-center justify-center gap-2 mb-12"
-          >
-            <Button
-              variant={filter === "all" ? "default" : "outline"}
-              onClick={() => setFilter("all")}
-              className="gap-2"
+          {/* Filters - only show for authenticated users */}
+          {user && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex flex-wrap items-center justify-center gap-2 mb-12"
             >
-              <Ticket className="w-4 h-4" />
-              All ({raffles.length})
-            </Button>
-            <Button
-              variant={filter === "LIVE" ? "default" : "outline"}
-              onClick={() => setFilter("LIVE")}
-              className="gap-2"
-            >
-              <Clock className="w-4 h-4" />
-              Live ({liveCount})
-            </Button>
-            <Button
-              variant={filter === "CLOSED" ? "default" : "outline"}
-              onClick={() => setFilter("CLOSED")}
-              className="gap-2"
-            >
-              <Trophy className="w-4 h-4" />
-              Closed ({closedCount})
-            </Button>
-          </motion.div>
+              <Button
+                variant={filter === "all" ? "default" : "outline"}
+                onClick={() => setFilter("all")}
+                className="gap-2"
+              >
+                <Ticket className="w-4 h-4" />
+                All ({raffles.length})
+              </Button>
+              <Button
+                variant={filter === "LIVE" ? "default" : "outline"}
+                onClick={() => setFilter("LIVE")}
+                className="gap-2"
+              >
+                <Clock className="w-4 h-4" />
+                Live ({liveCount})
+              </Button>
+              <Button
+                variant={filter === "CLOSED" ? "default" : "outline"}
+                onClick={() => setFilter("CLOSED")}
+                className="gap-2"
+              >
+                <Trophy className="w-4 h-4" />
+                Closed ({closedCount})
+              </Button>
+            </motion.div>
+          )}
 
           {/* Raffles Grid */}
           {isLoading ? (
