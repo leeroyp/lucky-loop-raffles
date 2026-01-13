@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout/Layout";
-import { Footer } from "@/components/Footer";
 import { SEO } from "@/components/SEO";
 import { useAuth } from "@/lib/auth";
 import { 
@@ -276,8 +275,6 @@ export default function Index() {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
     </Layout>
   );
 }
